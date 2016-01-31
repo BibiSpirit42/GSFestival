@@ -1,0 +1,40 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Lecture d'un festival - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>{{ festival.name }}</h2>
+
+    <h3>Description</h3>
+    <div class="well">
+        {{ festival.description }}
+    </div>
+
+    <h3>Liste des niveaux :</h3>
+    <ul>
+        {% for level in festival.levels %}
+            <li>{{ level.name }}{% if not loop.last %}, {% endif %}</li>
+        {% else %}
+            <li>Pas (encore !) de niveaux</li>
+        {% endfor %}
+    </ul>
+
+    <p>
+        <a href="{{ path('gs_festival_homepage') }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour à la liste
+        </a>
+        <a href="{{ path('gs_festival_edit', {'id': festival.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+            Modifier le festival
+        </a>
+        <a href="{{ path('gs_festival_delete', {'id': festival.id}) }}" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Supprimer le festival
+        </a>
+    </p>
+
+{% endblock %}

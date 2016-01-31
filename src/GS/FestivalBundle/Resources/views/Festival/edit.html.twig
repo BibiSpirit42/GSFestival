@@ -1,0 +1,14 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Modification d'un festival - {{ parent() }}
+{% endblock %}
+
+
+{% block gsfestival_body %}
+
+    <h2>Editer un festival</h2>
+
+    {{ include("GSFestivalBundle:Festival:form.html.twig") }}
+
+{% endblock %}

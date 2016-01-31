@@ -1,0 +1,29 @@
+gs_festival_homepage:
+    path:     /{page}
+    defaults:
+        _controller: GSFestivalBundle:Festival:index
+        page: 1
+    requirements:
+        page: \d*
+
+gs_festival_view:
+    path:     /festival/{id}
+    defaults:  { _controller: GSFestivalBundle:Festival:view }
+    requirements:
+        id: \d+
+
+gs_festival_add:
+    path:     /add
+    defaults:  { _controller: GSFestivalBundle:Festival:add }
+
+gs_festival_edit:
+    path:     /edit/{id}
+    defaults:  { _controller: GSFestivalBundle:Festival:edit }
+    requirements:
+        id: \d+
+
+gs_festival_delete:
+    path:     /delete/{id}
+    defaults:  { _controller: GSFestivalBundle:Festival:delete }
+    requirements:
+        id: \d+

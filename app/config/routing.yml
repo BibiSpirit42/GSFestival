@@ -1,0 +1,7 @@
+gs_festival:
+    resource: "@GSFestivalBundle/Resources/config/routing.yml"
+    prefix:   /festival
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation

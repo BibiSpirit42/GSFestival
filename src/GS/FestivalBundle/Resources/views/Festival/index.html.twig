@@ -1,0 +1,31 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Liste des festivals</h2>
+
+    <ul>
+        {% for festival in listFestivals %}
+            <li>
+                <a href="{{ path('gs_festival_view', {'id': festival.id}) }}">
+                    {{ festival.name }}
+                </a>
+            </li>
+        {% else %}
+            <li>Pas (encore !) de festivals</li>
+        {% endfor %}
+    </ul>
+
+    <ul class="pagination">
+        {# On utilise la fonction range(a, b) qui crée un tableau de valeurs entre a et b #}
+        {% for p in range(1, nbPages) %}
+            <li{% if p == page %} class="active"{% endif %}>
+                <a href="{{ path('gs_festival_homepage', {'page': p}) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

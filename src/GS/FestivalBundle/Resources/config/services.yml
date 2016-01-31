@@ -1,0 +1,4 @@
+services:
+#    gs_festival.example:
+#        class: GS\FestivalBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
