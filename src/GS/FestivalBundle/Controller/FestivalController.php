@@ -70,7 +70,7 @@ class FestivalController extends Controller
             $em->persist($festival);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('notice', 'Festival bien enregistré.');
+            $request->getSession()->getFlashBag()->add('success', 'Festival bien enregistré.');
 
             return $this->redirectToRoute('gs_festival_view', array('id' => $festival->getId()));
         }
@@ -98,7 +98,7 @@ class FestivalController extends Controller
         if ($form->handleRequest($request)->isValid()) {
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('notice', 'Festival bien modifié.');
+            $request->getSession()->getFlashBag()->add('success', 'Festival bien modifié.');
 
             return $this->redirectToRoute('gs_festival_view', array('id' => $festival->getId()));
         }

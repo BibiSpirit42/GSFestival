@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="registration")
  * @ORM\Entity(repositoryClass="GS\FestivalBundle\Repository\RegistrationRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Registration
 {
@@ -26,7 +27,7 @@ class Registration
      *
      * @ORM\Column(name="status", type="string", length=255)
      */
-    private $status;
+    private $status = 'status_received';
 
     /**
      * @var \DateTime
@@ -42,6 +43,16 @@ class Registration
      */
     private $role;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="GS\FestivalBundle\Entity\Level", inversedBy="registrations")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $level;
+
+    public function __construct()
+    {
+        $this->date = new \Datetime();
+    }
 
     /**
      * Get id
@@ -124,5 +135,45 @@ class Registration
     {
         return $this->role;
     }
-}
 
+    /**
+     * Set level
+     *
+     * @param \GS\FestivalBundle\Entity\Level $level
+     *
+     * @return Registration
+     */
+    public function setLevel(\GS\FestivalBundle\Entity\Level $level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return \GS\FestivalBundle\Entity\Level
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     */
+    public function increase()
+    {
+        $this->getLevel()->increaseRegistration();
+    }
+
+    /**
+     * @ORM\PreRemove
+     */
+    public function decrease()
+    {
+        $this->getLevel()->decreaseRegistration();
+    }
+
+}

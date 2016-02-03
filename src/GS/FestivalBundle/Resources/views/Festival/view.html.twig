@@ -8,6 +8,13 @@
 
     <h2>{{ festival.name }}</h2>
 
+    <p>
+        <a href="{{ path('gs_registration_add', {'id': festival.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-pencil"></i>
+            Inscription
+        </a>
+    </p>
+
     <h3>Description</h3>
     <div class="well">
         {{ festival.description }}
@@ -16,16 +23,36 @@
     <h3>Liste des niveaux :</h3>
     <ul>
         {% for level in festival.levels %}
-            <li>{{ level.name }}{% if not loop.last %}, {% endif %}</li>
+            <li>
+                {{ level.name }} 
+                <button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#levelModal{{ level.id }}">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> Apercu
+                </button>
+                <a href="{{ path('gs_level_view', {'id': level.id}) }}" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Detail
+                </a>
+                <a href="{{ path('gs_level_edit', {'id': level.id}) }}" class="btn btn-default btn-xs">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Modifier
+                </a>
+                <a href="{{ path('gs_level_delete', {'id': level.id}) }}" class="btn btn-danger btn-xs">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Supprimer
+                </a>
+            </li>
         {% else %}
             <li>Pas (encore !) de niveaux</li>
         {% endfor %}
     </ul>
 
+    <hr>
+    
     <p>
         <a href="{{ path('gs_festival_homepage') }}" class="btn btn-default">
             <i class="glyphicon glyphicon-chevron-left"></i>
             Retour à la liste
+        </a>
+        <a href="{{ path('gs_level_add', {'id': festival.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-plus"></i>
+            Ajouter un niveau
         </a>
         <a href="{{ path('gs_festival_edit', {'id': festival.id}) }}" class="btn btn-default">
             <i class="glyphicon glyphicon-edit"></i>
@@ -36,5 +63,26 @@
             Supprimer le festival
         </a>
     </p>
+
+    {% for level in festival.levels %}
+        <div class="modal fade" id="levelModal{{ level.id }}" tabindex="-1" role="dialog" aria-labelledby="levelModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="levelModalLabel">Niveau {{ level.name }}</h4>
+                    </div>
+                    <div class="modal-body">
+                        {{ render(controller("GSFestivalBundle:Level:overview", {'id': level.id })) }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 
 {% endblock %}

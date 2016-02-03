@@ -1,9 +1,12 @@
+{% form_theme form 'bootstrap_3_horizontal_layout.html.twig' %}
+
 <h3>Formulaire de festival</h3>
 
 <div class="well">
     {{ form(form) }}
 </div>
 
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>
     jQuery(document).ready(function () {
         // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
@@ -40,8 +43,6 @@
             // - le texte "__name__" qu'il contient par le numéro du champ
             var $prototype = $($container.data('prototype').replace(/__name__label__/g, 'Niveau n°' + (index + 1))
                     .replace(/__name__/g, index));
-            //var $prototype = $($container.attr('data-prototype').replace(/__name__label__/g, 'Niveau n°' + (index + 1))
-            //        .replace(/__name__/g, index));
 
             // On ajoute au prototype un lien pour pouvoir supprimer la catégorie
             addDeleteLink($prototype);

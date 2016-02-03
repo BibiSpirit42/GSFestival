@@ -57,7 +57,7 @@ class Festival
     private $published = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Level", mappedBy="festival", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Level", mappedBy="festival", cascade={"persist", "remove"})
      */
     private $levels;
 

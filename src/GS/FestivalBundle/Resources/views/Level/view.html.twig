@@ -1,0 +1,40 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Lecture d'un niveau - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+    <h2>{{ level.name }}</h2>
+
+    <h3>Description</h3>
+    <div class="well">
+        {{ level.description }}
+    </div>
+
+    <h3>Capacite</h3>
+    {{ level.capacity }} {% if level.solo %} personnes. {% else %} couples + {{ level.extraPerson }} suiveuses. {% endif %}
+
+    <h3>Prix</h3>
+    {{ level.price }} &euro;
+
+    <h3>Inscriptions</h3>
+    Il y a {{ level.nbRegistrations }} inscriptions.
+
+    <hr>
+    
+    <p>
+        <a href="{{ path('gs_festival_view', {'id': level.festival.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour au festival
+        </a>
+        <a href="{{ path('gs_level_edit', {'id': level.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+            Modifier le niveau
+        </a>
+        <a href="{{ path('gs_level_delete', {'id': level.id}) }}" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Supprimer le niveau
+        </a>
+    </p>
+{% endblock %}

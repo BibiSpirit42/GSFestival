@@ -1,0 +1,15 @@
+<h2>{{ level.name }}</h2>
+
+<h3>Description</h3>
+<div class="well">
+    {{ level.description }}
+</div>
+
+<h3>Capacite</h3>
+{{ level.capacity }} {% if level.solo %} personnes. {% else %} couples + {{ level.extraPerson }} suiveuses. {% endif %}
+
+<h3>Prix</h3>
+{{ level.price }} &euro;
+
+<h3>Inscriptions</h3>
+Il y a {{ level.nbRegistrations }} inscriptions.

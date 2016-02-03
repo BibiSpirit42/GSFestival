@@ -7,7 +7,7 @@ gs_festival_homepage:
         page: \d*
 
 gs_festival_view:
-    path:     /festival/{id}
+    path:     /view/{id}
     defaults:  { _controller: GSFestivalBundle:Festival:view }
     requirements:
         id: \d+
@@ -25,5 +25,43 @@ gs_festival_edit:
 gs_festival_delete:
     path:     /delete/{id}
     defaults:  { _controller: GSFestivalBundle:Festival:delete }
+    requirements:
+        id: \d+
+
+
+gs_level_add:
+    path:     /level/add/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:add }
+    requirements:
+        id: \d+
+
+gs_level_edit:
+    path:     /level/edit/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:edit }
+    requirements:
+        id: \d+
+
+gs_level_view:
+    path:     /level/view/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:view }
+    requirements:
+        id: \d+
+
+gs_level_delete:
+    path:     /level/delete/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:delete }
+    requirements:
+        id: \d+
+
+
+gs_registration_add:
+    path:     /registration/add/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:add }
+    requirements:
+        id: \d+
+
+gs_registration_view:
+    path:     /registration/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:view }
     requirements:
         id: \d+

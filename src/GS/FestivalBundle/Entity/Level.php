@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Level
 {
+
     /**
      * @var int
      *
@@ -40,7 +41,7 @@ class Level
      *
      * @ORM\Column(name="solo", type="boolean")
      */
-    private $solo;
+    private $solo = False;
 
     /**
      * @var int
@@ -48,6 +49,13 @@ class Level
      * @ORM\Column(name="capacity", type="smallint")
      */
     private $capacity;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="extraPerson", type="smallint")
+     */
+    private $extraPerson;
 
     /**
      * @var float
@@ -61,6 +69,43 @@ class Level
      * @ORM\JoinColumn(nullable=false)
      */
     private $festival;
+
+    /**
+     * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Registration", mappedBy="level", cascade={"persist"})
+     */
+    private $registrations;
+
+    /**
+     * @ORM\Column(name="nb_registrations", type="integer")
+     */
+    private $nbRegistrations = 0;
+
+    public function increaseRegistration()
+    {
+        $this->nbRegistrations++;
+    }
+
+    public function decreaseRegistration()
+    {
+        $this->nbRegistrations--;
+    }
+
+    public function addRegistration(Registration $registration)
+    {
+        $this->registrations[] = $registration;
+        $registration->setLevel($this);
+        return $this;
+    }
+
+    public function removeRegistration(Registration $registration)
+    {
+        $this->registrations->removeElement($registration);
+    }
+
+    public function getRegistrations()
+    {
+        return $this->registrations;
+    }
 
     /**
      * Get id
@@ -215,4 +260,61 @@ class Level
     {
         return $this->festival;
     }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->registrations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set extraPerson
+     *
+     * @param integer $extraPerson
+     *
+     * @return Level
+     */
+    public function setExtraPerson($extraPerson)
+    {
+        $this->extraPerson = $extraPerson;
+
+        return $this;
+    }
+
+    /**
+     * Get extraPerson
+     *
+     * @return integer
+     */
+    public function getExtraPerson()
+    {
+        return $this->extraPerson;
+    }
+
+    /**
+     * Set nbRegistrations
+     *
+     * @param integer $nbRegistrations
+     *
+     * @return Level
+     */
+    public function setNbRegistrations($nbRegistrations)
+    {
+        $this->nbRegistrations = $nbRegistrations;
+
+        return $this;
+    }
+
+    /**
+     * Get nbRegistrations
+     *
+     * @return integer
+     */
+    public function getNbRegistrations()
+    {
+        return $this->nbRegistrations;
+    }
+
 }

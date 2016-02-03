@@ -14,37 +14,26 @@
 
     <body>
         <div class="container">
-            <div id="header" class="jumbotron">
-                <h1>Gestion des festivals</h1>
-                <p>
-                    Ce projet est propulsé par Symfony2.
-                </p>
-            </div>
-
+            {% for type in ['info', 'success', 'danger', 'warning'] %}
+                {% for message in app.session.flashbag.get(type) %}
+                    <div class="alert alert-{{ type }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            
             <div class="row">
-                <div id="menu" class="col-md-3">
-                    {% block menu %}
-                    {% endblock %}
-                </div>
-                <div id="content" class="col-md-9">
-                    {% block body %}
-                    {% endblock %}
-                </div>
+                {% block body %}
+                {% endblock %}
             </div>
-
-            <hr>
-
-            <footer>
-                <p>Grenoble Swing</p>
-            </footer>
         </div>
 
         {% block javascripts %}
             {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous"></script>
+                    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+                    crossorigin="anonymous"></script>
         {% endblock %}
 
     </body>
