@@ -27,13 +27,10 @@ class LevelType extends AbstractType
                 ->add('capacity', IntegerType::class)
                 ->add('extraPerson', IntegerType::class)
                 ->add('price', NumberType::class, array('scale' => 2))
+                ->add('save', SubmitType::class)
         ;
-        
-        if ( $options['btn_summit'] ) {
-            $builder->add('save', SubmitType::class);
-        }
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */

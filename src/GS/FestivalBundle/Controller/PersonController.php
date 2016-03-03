@@ -2,13 +2,13 @@
 
 namespace GS\FestivalBundle\Controller;
 
-use GS\FestivalBundle\Entity\Festival;
-use GS\FestivalBundle\Form\FestivalType;
+use GS\FestivalBundle\Entity\Person;
+use GS\FestivalBundle\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class FestivalController extends Controller
+class PersonController extends Controller
 {
 
     public function indexAction($page)
@@ -19,25 +19,25 @@ class FestivalController extends Controller
 
         // Ici je fixe le nombre d'annonces par page à 3
         // Mais bien sûr il faudrait utiliser un paramètre, et y accéder via $this->container->getParameter('nb_per_page')
-        $nbPerPage = 5;
+        $nbPerPage = 20;
 
         // On récupère notre objet Paginator
-        $listFestivals = $this->getDoctrine()
+        $listPersons = $this->getDoctrine()
                 ->getManager()
-                ->getRepository('GSFestivalBundle:Festival')
-                ->getFestivals($page, $nbPerPage)
+                ->getRepository('GSFestivalBundle:Person')
+                ->getPersons($page, $nbPerPage)
         ;
 
         // On calcule le nombre total de pages grâce au count($listAdverts) qui retourne le nombre total d'annonces
-        $nbPages = max(1, ceil(count($listFestivals) / $nbPerPage));
+        $nbPages = max(1, ceil(count($listPersons) / $nbPerPage));
 
         // Si la page n'existe pas, on retourne une 404
         if ($page > $nbPages) {
             throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
 
-        return $this->render('GSFestivalBundle:Festival:index.html.twig', array(
-                    'listFestivals' => $listFestivals,
+        return $this->render('GSFestivalBundle:Person:index.html.twig', array(
+                    'listPersons' => $listPersons,
                     'nbPages' => $nbPages,
                     'page' => $page
         ));
@@ -49,33 +49,33 @@ class FestivalController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Pour récupérer une annonce unique : on utilise find()
-        $festival = $em->getRepository('GSFestivalBundle:Festival')->find($id);
+        $person = $em->getRepository('GSFestivalBundle:Person')->find($id);
 
         // On vérifie que l'annonce avec cet id existe bien
-        if ($festival === null) {
-            throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
+        if ($person === null) {
+            throw $this->createNotFoundException("Le personne d'id " . $id . " n'existe pas.");
         }
-        return $this->render('GSFestivalBundle:Festival:view.html.twig', array(
-                    'festival' => $festival
+        return $this->render('GSFestivalBundle:Person:view.html.twig', array(
+                    'person' => $person
         ));
     }
 
     public function addAction(Request $request)
     {
-        $festival = new Festival();
-        $form = $this->createForm(FestivalType::class, $festival);
+        $person = new Person();
+        $form = $this->createForm(PersonType::class, $person);
         
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($festival);
+            $em->persist($person);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('success', 'Festival bien enregistré.');
+            $request->getSession()->getFlashBag()->add('success', 'Personne bien enregistrée.');
 
-            return $this->redirectToRoute('gs_festival_view', array('id' => $festival->getId()));
+            return $this->redirectToRoute('gs_person_view', array('id' => $person->getId()));
         }
 
-        return $this->render('GSFestivalBundle:Festival:add.html.twig', array(
+        return $this->render('GSFestivalBundle:Person:add.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -86,24 +86,24 @@ class FestivalController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Pour récupérer une annonce unique : on utilise find()
-        $festival = $em->getRepository('GSFestivalBundle:Festival')->find($id);
+        $person = $em->getRepository('GSFestivalBundle:Person')->find($id);
 
         // On vérifie que l'annonce avec cet id existe bien
-        if ($festival === null) {
-            throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
+        if ($person === null) {
+            throw $this->createNotFoundException("La personne d'id " . $id . " n'existe pas.");
         }
         
-        $form = $this->createForm(FestivalType::class, $festival);
+        $form = $this->createForm(PersonType::class, $person);
         
         if ($form->handleRequest($request)->isValid()) {
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('success', 'Festival bien modifié.');
+            $request->getSession()->getFlashBag()->add('success', 'Personne bien modifiée.');
 
-            return $this->redirectToRoute('gs_festival_view', array('id' => $festival->getId()));
+            return $this->redirectToRoute('gs_person_view', array('id' => $person->getId()));
         }
         
-        return $this->render('GSFestivalBundle:Festival:edit.html.twig', array(
+        return $this->render('GSFestivalBundle:Person:edit.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -114,27 +114,27 @@ class FestivalController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // On récupère l'entité correspondant à l'id $id
-        $festival = $em->getRepository('GSFestivalBundle:Festival')->find($id);
+        $person = $em->getRepository('GSFestivalBundle:Person')->find($id);
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
-        if ($festival == null) {
-            throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
+        if ($person == null) {
+            throw $this->createNotFoundException("La personne d'id " . $id . " n'existe pas.");
         }
 
         $form = $this->createFormBuilder()->getForm();
         
         if ($form->handleRequest($request)->isValid()) {
-            $em->remove($festival);
+            $em->remove($person);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('success', "Le festival a bien été supprimé.");
+            $request->getSession()->getFlashBag()->add('success', "La personne a bien été supprimée.");
 
-            return $this->redirect($this->generateUrl('gs_festival_homepage'));
+            return $this->redirect($this->generateUrl('gs_person_homepage'));
         }
 
         // Si la requête est en GET, on affiche une page de confirmation avant de supprimer
-        return $this->render('GSFestivalBundle:Festival:delete.html.twig', array(
-                    'festival' => $festival,
+        return $this->render('GSFestivalBundle:Person:delete.html.twig', array(
+                    'person' => $person,
                     'form' => $form->createView()
         ));
     }

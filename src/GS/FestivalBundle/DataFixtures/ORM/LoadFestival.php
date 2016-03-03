@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use GS\FestivalBundle\Entity\Festival;
 use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Entity\Registration;
+use GS\FestivalBundle\Entity\Person;
 
 class LoadCategory implements FixtureInterface
 {
@@ -34,23 +35,35 @@ class LoadCategory implements FixtureInterface
         $level2->setExtraPerson(2);
         $level2->setPrice(150.0);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 15; $i++) {
+            $person = new Person();
+            $person->setFirstName('Toto'.$i);
+            $person->setLastName('Titi'.$i);
+            $person->setEmail('bibi'.$i.'@gmail.com');
+
             $registration = new Registration();
-            if ($i % 2) {
+            if ($i % 2 || $i > 10) {
                 $registration->setRole(True);
             } else {
                 $registration->setRole(False);
             }
+            $person->addRegistration($registration);
             $level1->addRegistration($registration);
         }
 
-        for ($i = 0; $i < 13; $i++) {
+        for ($i = 0; $i < 15; $i++) {
+            $person = new Person();
+            $person->setFirstName('Tata'.$i);
+            $person->setLastName('Tutu'.$i);
+            $person->setEmail('baba'.$i.'@gmail.com');
+
             $registration = new Registration();
-            if ($i % 2) {
+            if ($i % 2 && $i < 11) {
                 $registration->setRole(True);
             } else {
                 $registration->setRole(False);
             }
+            $person->addRegistration($registration);
             $level2->addRegistration($registration);
         }
 

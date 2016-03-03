@@ -71,12 +71,12 @@ class Level
     private $festival;
 
     /**
-     * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Registration", mappedBy="level", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Registration", mappedBy="level", cascade={"persist", "remove"})
      */
     private $registrations;
 
     /**
-     * @ORM\Column(name="nb_registrations", type="integer")
+     * @ORM\Column(name="nbRegistrations", type="integer")
      */
     private $nbRegistrations = 0;
 

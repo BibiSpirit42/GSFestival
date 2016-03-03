@@ -1,0 +1,32 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Accueil - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Liste des personnes</h2>
+
+    <ul>
+        {% for person in listPersons %}
+            <li>
+                {{ person.firstName }} {{ person.lastName }} - {{ person.email }}
+                <a href="{{ path('gs_person_view', {'id': person.id}) }}" class="btn btn-danger btn-xs">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Voir
+                </a>
+            </li>
+        {% else %}
+            <li>Pas (encore !) de personnes</li>
+        {% endfor %}
+    </ul>
+
+    <ul class="pagination">
+        {# On utilise la fonction range(a, b) qui crée un tableau de valeurs entre a et b #}
+        {% for p in range(1, nbPages) %}
+            <li{% if p == page %} class="active"{% endif %}>
+                <a href="{{ path('gs_person_homepage', {'page': p}) }}">{{ p }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

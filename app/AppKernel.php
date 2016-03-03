@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new GS\FestivalBundle\GSFestivalBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Ivory\OrderedFormBundle\IvoryOrderedFormBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

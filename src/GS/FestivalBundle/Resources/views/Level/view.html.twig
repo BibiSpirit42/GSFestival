@@ -18,8 +18,70 @@
     <h3>Prix</h3>
     {{ level.price }} &euro;
 
-    <h3>Inscriptions</h3>
-    Il y a {{ level.nbRegistrations }} inscriptions.
+    <h3>Liste des inscriptions</h3>
+    Il y a {{ level.nbRegistrations }} inscriptions :
+    {% if level.nbRegistrations == 0 %}
+        Pas (encore !) d'inscriptions
+    {% else %}
+        <table class="table">
+            <tr>
+                <th>
+                </th>
+                <th>
+                    Leaders
+                </th>
+                <th>
+                    Followers
+                </th>
+            </tr>
+            {% set i = 1 %}
+            {% for couple in couples %}
+                <tr>
+                    <td>
+                        {{ i }}
+                        {% set i = i + 1 %}
+                    </td>
+                    {% for registration in couple %}
+                        <td>
+                            {% if registration is not null %}
+                                {{ registration.person.firstName }} {{ registration.person.lastName }}
+                                {% if registration.status == 'received' or registration.status == 'validated' %}
+                                    <a href="{{ path('gs_registration_waiting', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Mettre en liste d'attente">
+                                        <i class="glyphicon glyphicon-list"></i>
+                                    </a>
+                                {% endif %}
+                                {% if registration.status == 'validated' %}
+                                    <a href="{{ path('gs_payment_add', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Ajouter paiement">
+                                        <i class="glyphicon glyphicon-euro"></i>
+                                    </a>
+                                {% endif %}
+                                {% if registration.status == 'received' or registration.status == 'waiting' %}
+                                    <a href="{{ path('gs_registration_validate', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Valider">
+                                        <i class="glyphicon glyphicon-ok"></i>
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('gs_registration_view', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Voir">
+                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                </a>
+                                <a href="{{ path('gs_registration_edit', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Modifier">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                                <a href="{{ path('gs_registration_delete', {'id': registration.id}) }}" class="btn btn-danger btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Suprimmer">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                            {% endif %}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 
     <hr>
     
@@ -37,4 +99,14 @@
             Supprimer le niveau
         </a>
     </p>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
 {% endblock %}

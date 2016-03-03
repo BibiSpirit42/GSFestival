@@ -8,6 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
+use GS\FestivalBundle\Form\PersonInRegistrationType;
 
 class RegistrationType extends AbstractType
 {
@@ -18,6 +21,7 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+                ->add('person', PersonInRegistrationType::class)
                 ->add('role', ChoiceType::class, array(
                     'choices' => array(
                         'Guideur/Cavalier' => true,
@@ -29,20 +33,11 @@ class RegistrationType extends AbstractType
                     'choice_label' => 'name',
                     'choices' => $options['festival']->getLevels(),
                 ))
-                ->add('envoyer', SubmitType::class)
+                ->add('partnerFirstName', TextType::class, array('required' => false))
+                ->add('partnerLastName', TextType::class, array('required' => false))
+                ->add('partnerEmail', TextType::class, array('required' => false))
+                ->add('envoyer', SubmitType::class, array('position' => 'last'))
         ;
-
-//        $builder
-//                ->add('status', ChoiceType::class, array(
-//                    'choices' => array(
-//                        'Received' => 'status_received',
-//                        'Waiting list' => 'status_waiting_list',
-//                        'Validated' => 'status_validated',
-//                        'Paid' => 'status_paid',
-//                        'Cancelled' => 'status_cancelled',
-//                    ),
-//                ))
-//        ;
     }
 
     /**

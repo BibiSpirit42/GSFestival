@@ -22,7 +22,7 @@ class LevelController extends Controller
         }
 
         $level = new Level();
-        $form = $this->createForm(LevelType::class, $level, array('btn_summit' => true));
+        $form = $this->createForm(LevelType::class, $level);
 
         if ($form->handleRequest($request)->isValid()) {
             $festival->addLevel($level);
@@ -49,7 +49,7 @@ class LevelController extends Controller
             throw $this->createNotFoundException("Le niveau d'id " . $id . " n'existe pas.");
         }
 
-        $form = $this->createForm(LevelType::class, $level, array('btn_summit' => true));
+        $form = $this->createForm(LevelType::class, $level);
 
         if ($form->handleRequest($request)->isValid()) {
             $em->flush();
@@ -89,8 +89,10 @@ class LevelController extends Controller
             throw $this->createNotFoundException("Le niveau d'id " . $id . " n'existe pas.");
         }
 
+        $couples = $em->getRepository('GSFestivalBundle:Registration')->getSortedForLevel($level);
         return $this->render('GSFestivalBundle:Level:view.html.twig', array(
                     'level' => $level,
+                    'couples' => $couples,
         ));
     }
 
@@ -115,7 +117,7 @@ class LevelController extends Controller
             $em->remove($level);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', "Le niveau a bien été supprimé.");
+            $request->getSession()->getFlashBag()->add('success', "Le niveau a bien été supprimé.");
 
             return $this->redirect($this->generateUrl('gs_festival_view', array('id' => $festival->getId())));
         }

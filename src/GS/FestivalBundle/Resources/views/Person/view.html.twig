@@ -1,0 +1,42 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Lecture d'une personne - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>{{ person.firstName }} {{ person.lastName }}</h2>
+
+    <h2>Email</h2>
+    {{ person.email }}
+
+    <h3>Liste des inscriptions :</h3>
+    <ul>
+        {% for registration in person.registrations %}
+            <li>
+                {{ registration.level.festival.name }} - {{ registration.level.name }}
+            </li>
+        {% else %}
+            <li>Pas (encore !) d'inscriptions</li>
+            {% endfor %}
+    </ul>
+
+    <hr>
+
+    <p>
+        <a href="{{ path('gs_person_homepage') }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour à la liste
+        </a>
+        <a href="{{ path('gs_person_edit', {'id': person.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+            Modifier la personne
+        </a>
+        <a href="{{ path('gs_person_delete', {'id': person.id}) }}" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Supprimer la personne
+        </a>
+    </p>
+
+{% endblock %}
