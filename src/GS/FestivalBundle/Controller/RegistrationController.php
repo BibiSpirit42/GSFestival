@@ -3,12 +3,14 @@
 namespace GS\FestivalBundle\Controller;
 
 use GS\FestivalBundle\Entity\Registration;
+use GS\FestivalBundle\Entity\Person;
 use GS\FestivalBundle\Form\RegistrationType;
 use GS\FestivalBundle\Form\RegistrationEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class RegistrationController extends Controller
 {
 
@@ -23,11 +25,57 @@ class RegistrationController extends Controller
             throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
         }
 
-        $registration = new Registration();
-        $form = $this->createForm(RegistrationType::class, $registration, array('festival' => $festival));
+        $form = $this->createFormBuilder()
+                ->add('email', EmailType::class, array(
+                    'data' => $request->getSession()->get('email'),
+                ))
+                ->add('next', SubmitType::class, array('label' => 'Next step'))
+                ->getForm();
+        $request->getSession()->remove('email');
 
         if ($form->handleRequest($request)->isValid()) {
-            $registration->setRemainingPayment($form->get('level')->getData()->getPrice());
+            $request->getSession()->set('email', $form->get('email')->getData());
+            $person = $em->getRepository('GSFestivalBundle:Person')->findOneByEmail($form->get('email')->getData());
+            if ($person !== null) {
+                $registrations = $em->getRepository('GSFestivalBundle:Registration')->getForPersonAndFestival($festival, $person);
+                if ($registrations !== null) {
+                    $request->getSession()->getFlashBag()->add('danger', 'Il y a déja une inscription avec cet email.');
+                    return $this->redirectToRoute('gs_registration_add', array('id' => $id));
+                }
+            }
+            return $this->redirectToRoute('gs_registration_add2', array('id' => $id));
+        }
+
+        return $this->render('GSFestivalBundle:Registration:add.html.twig', array(
+                    'festival' => $festival,
+                    'form' => $form->createView(),
+        ));
+    }
+
+    public function add2Action($id, Request $request)
+    {
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        // Pour récupérer une annonce unique : on utilise find()
+        $festival = $em->getRepository('GSFestivalBundle:Festival')->find($id);
+        if ($festival === null) {
+            throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
+        }
+
+        $registration = new Registration();
+        $email = $request->getSession()->get('email');
+        $request->getSession()->remove('email');
+        $person = $em->getRepository('GSFestivalBundle:Person')->findOneByEmail($email);
+        if ($person === null) {
+            $person = new Person();
+            $person->setEmail($email);
+        }
+        $registration->setPerson($person);
+        $form = $this->createForm(RegistrationType::class, $registration, array('festival' => $festival));            
+
+        if ($form->handleRequest($request)->isValid()) {
+            $form->get('level')->getData()->addRegistration($registration);
             $em->persist($registration);
             $em->flush();
 

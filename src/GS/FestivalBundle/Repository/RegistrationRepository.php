@@ -4,6 +4,8 @@ namespace GS\FestivalBundle\Repository;
 
 use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Entity\Registration;
+use GS\FestivalBundle\Entity\Festival;
+use GS\FestivalBundle\Entity\Person;
 
 /**
  * RegistrationRepository
@@ -65,6 +67,20 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('level', $level)
                 ->andWhere('a.role = :isFalse')
                 ->setParameter('isFalse', false);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getForPersonAndFestival(Festival $festival, Person $person)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->leftJoin('a.level', 'lvl')
+                ->addSelect('lvl')
+                ->where('a.person = :person')
+                ->setParameter('person', $person)
+                ->andWhere('lvl.festival = :festival')
+                ->setParameter('festival', $festival);
 
         return $qb->getQuery()->getResult();
     }

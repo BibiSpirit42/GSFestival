@@ -60,6 +60,12 @@ gs_registration_add:
     requirements:
         id: \d+
 
+gs_registration_add2:
+    path:     /registration/add2/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:add2 }
+    requirements:
+        id: \d+
+
 gs_registration_view:
     path:     /registration/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:view }

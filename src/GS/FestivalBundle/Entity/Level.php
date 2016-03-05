@@ -94,6 +94,7 @@ class Level
     {
         $this->registrations[] = $registration;
         $registration->setLevel($this);
+        $registration->setRemainingPayment($this->price);
         return $this;
     }
 

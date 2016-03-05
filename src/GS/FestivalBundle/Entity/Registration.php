@@ -91,7 +91,7 @@ class Registration
      *
      * @ORM\Column(name="remainingPayment", type="float")
      */
-    private $remainingPayment = 0.0;
+    private $remainingPayment;
 
     /**
      * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Payment", mappedBy="registration", cascade={"persist", "remove"})
