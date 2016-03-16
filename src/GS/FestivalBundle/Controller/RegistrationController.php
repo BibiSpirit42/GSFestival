@@ -264,6 +264,10 @@ class RegistrationController extends Controller
                 case 'pre_assigned':
                     $subject .= 'Assignment';
                     $registration->setAssignmentDate(new \DateTime());
+                    $datePayment = new \DateTime();
+                    $datePayment->add(new \DateInterval("P10D"));
+                    $options['datePayment'] = $datePayment;
+                    $options['level'] = $registration->getLevel();
                     break;
                 case 'pre_waiting':
                     $subject .= 'Waiting list';
@@ -275,6 +279,9 @@ class RegistrationController extends Controller
                     $subject .= 'Cancellation';
                     break;
                 case 'pre_reminder_1':
+                    $datePayment = clone $registration->getAssignmentDate();
+                    $datePayment->add(new \DateInterval("P10D"));
+                    $options['datePayment'] = $datePayment;
                     $subject .= 'Reminder';
                     break;
                 case 'pre_reminder_2':

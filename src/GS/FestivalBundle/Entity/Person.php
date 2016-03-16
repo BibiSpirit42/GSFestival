@@ -51,7 +51,7 @@ class Person
      */
     private $email;
 
-   /**
+    /**
      * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Registration", mappedBy="person", cascade={"remove"})
      */
     private $registrations;

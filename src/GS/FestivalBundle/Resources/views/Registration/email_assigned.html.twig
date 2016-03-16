@@ -15,8 +15,8 @@
 
         <p>Nous avons bien reçu votre demande d'inscription au GSDF 2015.</p>
 
-        <p><b>Vous êtes affecté au groupe "%niveau_fr%" :</b><br>
-            "%description_niveau_fr%"</p>
+        <p><b>Vous êtes affecté au groupe "{{ level.name }}" :</b><br>
+            "{{ level.description }}"</p>
 
         <p>Votre inscription sera validée définitivement après réception de votre paiement.<br>
             Avant de procéder à celui-ci, nous vous remercions de lire les quelques règles suivantes :<br>
@@ -30,7 +30,7 @@
 
         <h3>Paiement :</h3>
 
-        <p>Nous vous remercions d'effectuer le paiement de <b>%prix%€ avant le %date_paiement_fr%.</b><br>
+        <p>Nous vous remercions d'effectuer le paiement de <b>{{ level.price }}€ avant le {{ datePayment|date("d/m/Y") }}.</b><br>
             Passée cette date et sans nouvelle de votre part, nous serons contraint d'annuler votre inscription
             pour libérer une place sur la liste d'attente.</p>
 
@@ -63,8 +63,8 @@
 
         <p>We have received your registration to the GSDF 2015.</p>
 
-        <p><b>You're temporary affected to level "%niveau_en%":</b><br>
-            "%description_niveau_en%"</p>
+        <p><b>You're temporary affected to level "{{ level.name }}":</b><br>
+            "{{ level.description }}"</p>
 
         <p>You're registration will be final after we receive your payment.<br>
             Before sending your payment however, we'd like you to read a few rules: </p>
@@ -75,7 +75,7 @@
 
         <h3>Payment:</h3>
 
-        <p>To confirm your registration please send us your payment of <b>%prix%€ before the %date_paiement_en%.</b><br>
+        <p>To confirm your registration please send us your payment of <b>{{ level.price }}€ before the {{ datePayment|date("m/d/Y") }}.</b><br>
             After that date if we have not heard from you we will be forced to cancel your registration and give your place to someone on the waiting list.</p>
 
         <dl>
