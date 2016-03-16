@@ -77,10 +77,12 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
         $qb
                 ->leftJoin('a.level', 'lvl')
                 ->addSelect('lvl')
-                ->where('a.person = :person')
+                ->where('a.status != :cancelled')
+                ->andWhere('a.person = :person')
                 ->setParameter('person', $person)
                 ->andWhere('lvl.festival = :festival')
-                ->setParameter('festival', $festival);
+                ->setParameter('festival', $festival)
+                ->setParameter('cancelled', 'cancelled');
 
         return $qb->getQuery()->getResult();
     }

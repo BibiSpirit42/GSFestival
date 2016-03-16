@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+
+        <p>
+        <hr>
+        English version at the end.
+        <hr>
+
+        <p>Bonjour {{ firstName }} {{ lastName }},</p>
+
+        <p>Nous avons bien reçu votre demande d'inscription au GSDF 2015.</p>
+
+        <p><b>Vous êtes affecté au groupe "%niveau_fr%" :</b><br>
+            "%description_niveau_fr%"</p>
+
+        <p>Votre inscription sera validée définitivement après réception de votre paiement.<br>
+            Avant de procéder à celui-ci, nous vous remercions de lire les quelques règles suivantes :<br>
+        <ul>
+            <li>Même si nous faisons le maximum pour héberger tous ceux qui le demandent,
+                les hébergements chez l'habitant ne sont pas garantis pour tout le monde.
+                Merci de ne pas compter dessus et prévoir un plan B.</li>
+            <li>Pour tout remboursement, merci de vous référer à la politique d'annulation :
+                <a href="http://gsdf.grenobleswing.com/?page_id=523">http://gsdf.grenobleswing.com/?page_id=523</a></li>
+        </ul>
+
+        <h3>Paiement :</h3>
+
+        <p>Nous vous remercions d'effectuer le paiement de <b>%prix%€ avant le %date_paiement_fr%.</b><br>
+            Passée cette date et sans nouvelle de votre part, nous serons contraint d'annuler votre inscription
+            pour libérer une place sur la liste d'attente.</p>
+
+        <dl>
+            <dt><b>Résident d'un pays de la zone Euro (dont la monnaie est l'euro), et titulaire d'un compte dans ce pays.</b></dt>
+            <dd>Merci d'effectuer le paiement par virement sur le compte suivant :<br>
+                Grenoble Swing<br>
+                IBAN FR76 1390 6000 2785015008291 37<br>
+                BIC : AGRIFRPP839<br>
+                (Mettre en référence le nom de la ou les personnes pour lesquelles vous payez)<br>
+                Attention à ne pas commettre d'erreurs de saisie qui entraineront des frais supplémentaires de notre banque que nous serons dans l'obligation de vous réclamer.</dd>
+            <dt><b>Résident d'un pays hors zone euro, nous vous proposons la solution paypal (moyennant 5€ de frais supplémentaires). Merci de nous contactez.</b></dt>
+            <dd>Merci de ne pas faire de virement depuis un compte situé hors de la zone euros, les frais de 12€ seront à votre charge.</dd>
+        </dl>
+
+        <h2><font color=red>Attention les chèques ne sont pas acceptés.</font></h2>
+
+        <p>Ces règles assez strictes sont nécessaires pour que le stage se passe dans les meilleures conditions possibles !</p>
+
+        <p>Cordialement,</p>
+
+        <p>L'équipe du GSDF</p>
+
+        <p>
+        <hr>
+        English version
+        <hr>
+
+        <p>Hello {{ firstName }} {{ lastName }},</p>
+
+        <p>We have received your registration to the GSDF 2015.</p>
+
+        <p><b>You're temporary affected to level "%niveau_en%":</b><br>
+            "%description_niveau_en%"</p>
+
+        <p>You're registration will be final after we receive your payment.<br>
+            Before sending your payment however, we'd like you to read a few rules: </p>
+        <ul>
+            <li>We try our best to provide free accommodation for those who ask, but this cannot be guaranteed. We ask you to have a backup plan.</li>
+            <li>For any kind of refund please refer to our cancellation policy: <a href="http://gsdf.grenobleswing.com/?page_id=525">http://gsdf.grenobleswing.com/?page_id=525</a></li>
+        </ul>
+
+        <h3>Payment:</h3>
+
+        <p>To confirm your registration please send us your payment of <b>%prix%€ before the %date_paiement_en%.</b><br>
+            After that date if we have not heard from you we will be forced to cancel your registration and give your place to someone on the waiting list.</p>
+
+        <dl>
+            <dt><b>For residents in the Eurozone with a bank account in the Eurozone.</b></dt>
+            <dd>Please make a transfer to this bank account:<br>
+                Grenoble Swing<br>
+                IBAN FR76 1390 6000 2785015008291 37<br>
+                BIC : AGRIFRPP839<br>
+                (Put the names of people you're paying for as reference)<br>
+                Careful not to make any mistakes while entering those numbers which will create extra banking fee that we will have to charge you.</dd>
+            <dt><b>For non-European residents. We propose a paypal solution (with a €5 extra charge). Please contact us.</b></dt>
+            <dd>Please do not transfer money from a country outside the Eurozone. The 12€ extra fee will be at your expense.</dd>
+        </dl>
+
+        <p>Regards,</p>
+
+        <p>The GSDF Team</p>
+    </body>
+</html>

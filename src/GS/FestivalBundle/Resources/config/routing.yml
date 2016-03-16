@@ -85,14 +85,20 @@ gs_registration_delete:
         id: \d+
 
 gs_registration_validate:
-    path:     /registration/change/{id}/validate
-    defaults:  { _controller: GSFestivalBundle:Registration:validate }
+    path:     /registration/change/{id}/assign
+    defaults:  { _controller: GSFestivalBundle:Registration:assign }
     requirements:
         id: \d+
 
 gs_registration_waiting:
     path:     /registration/change/{id}/waiting
     defaults:  { _controller: GSFestivalBundle:Registration:waiting }
+    requirements:
+        id: \d+
+
+gs_registration_email:
+    path:     /registration/email/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:email }
     requirements:
         id: \d+
 

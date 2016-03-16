@@ -137,7 +137,7 @@ class RegistrationController extends Controller
         ));
     }
 
-    public function validateAction($id, Request $request)
+    public function assignAction($id, Request $request)
     {
         // On récupère l'EntityManager
         $em = $this->getDoctrine()->getManager();
@@ -148,7 +148,7 @@ class RegistrationController extends Controller
         }
 
         if ($registration->getStatus() == 'received' || $registration->getStatus() == 'waiting') {
-            $registration->setStatus('validated');
+            $registration->setStatus('pre_assigned');
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', 'Inscription validée.');
         } else {
@@ -170,13 +170,14 @@ class RegistrationController extends Controller
             throw $this->createNotFoundException("L'inscription d'id " . $id . " n'existe pas.");
         }
 
+        # Si l'inscription a deja ete validee, il faut etre sur que la mise en liste d'attente est volontaire
         $done = false;
         if ($registration->getStatus() == 'received') {
-            $registration->setStatus('waiting');
+            $registration->setStatus('pre_waiting');
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', 'Inscription mise en liste d\'attente.');
             $done = true;
-        } else if ($registration->getStatus() != 'validated') {
+        } else if ($registration->getStatus() != 'assigned') {
             $request->getSession()->getFlashBag()->add('warning', 'Impossible de valider l\'inscription, vérifiez son status.');
             $done = true;
         }
@@ -189,7 +190,7 @@ class RegistrationController extends Controller
 
         $form = $this->createFormBuilder()->getForm();
         if ($form->handleRequest($request)->isValid()) {
-            $registration->setStatus('waiting');
+            $registration->setStatus('pre_waiting');
             $em->flush();
             $request->getSession()->getFlashBag()->add('success', 'Inscription mise en liste d\'attente.');
 
@@ -235,6 +236,67 @@ class RegistrationController extends Controller
         return $this->render('GSFestivalBundle:Registration:delete.html.twig', array(
                     'form' => $form->createView(),
                     'registration' => $registration,
+        ));
+    }
+
+    public function emailAction($id, Request $request)
+    {
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        // On récupère l'entité correspondant à l'id $id
+        $registration = $em->getRepository('GSFestivalBundle:Registration')->find($id);
+
+        // Si l'annonce n'existe pas, on affiche une erreur 404
+        if ($registration == null) {
+            throw $this->createNotFoundException("Le niveau d'id " . $id . " n'existe pas.");
+        }
+
+        if (preg_match('/^pre_/', $registration->getStatus())) {
+            $message = \Swift_Message::newInstance()
+                    ->setFrom('gsdf@grenobleswing.com')
+                    ->setTo($registration->getPerson()->getEmail());
+            
+            $options['firstName'] = $registration->getPerson()->getFirstName();
+            $options['lastName'] = $registration->getPerson()->getLastName();
+            $subject = '[GSDF 2016] ';
+            switch ($registration->getStatus()) {
+                case 'pre_assigned':
+                    $subject .= 'Assignment';
+                    $registration->setAssignmentDate(new \DateTime());
+                    break;
+                case 'pre_waiting':
+                    $subject .= 'Waiting list';
+                    break;
+                case 'pre_paid':
+                    $subject .= 'Payment received';
+                    break;
+                case 'pre_cancelled':
+                    $subject .= 'Cancellation';
+                    break;
+                case 'pre_reminder_1':
+                    $subject .= 'Reminder';
+                    break;
+                case 'pre_reminder_2':
+                    $subject .= 'Last reminder';
+                    break;
+            }
+            $template = 'GSFestivalBundle:Registration:email_' .
+                    preg_replace('/^pre_/', '', $registration->getStatus()) . '.html.twig';
+            $message->setSubject($subject)
+                    ->setBody($this->renderView($template, $options), 'text/html');
+            $this->get('mailer')->send($message);
+            
+            $registration->setStatus(preg_replace('/^pre_/', '', $registration->getStatus()));
+            $em->flush();
+
+            $request->getSession()->getFlashBag()->add('success', "L'email a bien été envoyé.");
+        } else {
+            $request->getSession()->getFlashBag()->add('info', "L'email a déja été envoyé.");
+        }
+        
+        return $this->redirectToRoute('gs_level_view', array(
+                    'id' => $registration->getLevel()->getId(),
         ));
     }
 

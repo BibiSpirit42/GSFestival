@@ -94,6 +94,13 @@ class Registration
     private $remainingPayment;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="assignmentDate", type="datetime", nullable=true)
+     */
+    private $assignmentDate;
+
+    /**
      * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Payment", mappedBy="registration", cascade={"persist", "remove"})
      */
     private $payments;
@@ -383,7 +390,7 @@ class Registration
         $payment->setRegistration($this);
         $this->remainingPayment -= $payment->getAmount();
         if ($this->remainingPayment <= 0.0) {
-            $this->status = 'paid';
+            $this->status = 'pre_paid';
         }
 
         return $this;
@@ -407,5 +414,43 @@ class Registration
     public function getPayments()
     {
         return $this->payments;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Registration
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Set assignmentDate
+     *
+     * @param \DateTime $assignmentDate
+     *
+     * @return Registration
+     */
+    public function setAssignmentDate($assignmentDate)
+    {
+        $this->assignmentDate = $assignmentDate;
+
+        return $this;
+    }
+
+    /**
+     * Get assignmentDate
+     *
+     * @return \DateTime
+     */
+    public function getAssignmentDate()
+    {
+        return $this->assignmentDate;
     }
 }
