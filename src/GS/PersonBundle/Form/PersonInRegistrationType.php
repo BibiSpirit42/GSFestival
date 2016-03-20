@@ -1,6 +1,6 @@
 <?php
 
-namespace GS\FestivalBundle\Form;
+namespace GS\PersonBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 

@@ -5,7 +5,7 @@ namespace GS\FestivalBundle\Repository;
 use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Entity\Registration;
 use GS\FestivalBundle\Entity\Festival;
-use GS\FestivalBundle\Entity\Person;
+use GS\PersonBundle\Entity\Person;
 
 /**
  * RegistrationRepository

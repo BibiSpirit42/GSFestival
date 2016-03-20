@@ -1,16 +1,17 @@
 <?php
 
-namespace GS\FestivalBundle\Entity;
+namespace GS\PersonBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
 
 /**
  * Person
  *
  * @ORM\Table(name="person")
- * @ORM\Entity(repositoryClass="GS\FestivalBundle\Repository\PersonRepository")
+ * @ORM\Entity(repositoryClass="GS\PersonBundle\Repository\PersonRepository")
  * @UniqueEntity(fields="email", message="Une personne existe déjà avec cet email.")
  */
 class Person
@@ -50,6 +51,12 @@ class Person
      * )
      */
     private $email;
+
+    /**
+     * @ORM\Column(name="phoneNumber", type="phone_number", nullable=true)
+     * @AssertPhoneNumber(defaultRegion="FR")
+     */
+    private $phoneNumber;
 
     /**
      * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Registration", mappedBy="person", cascade={"remove"})
@@ -190,4 +197,28 @@ class Person
         return $this->firstName . ' ' . $this->lastName;
     }
 
+
+    /**
+     * Set phoneNumber
+     *
+     * @param phone_number $phoneNumber
+     *
+     * @return Person
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get phoneNumber
+     *
+     * @return phone_number
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
 }

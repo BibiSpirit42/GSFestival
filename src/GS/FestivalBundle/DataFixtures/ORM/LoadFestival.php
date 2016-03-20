@@ -7,10 +7,22 @@ use Doctrine\Common\Persistence\ObjectManager;
 use GS\FestivalBundle\Entity\Festival;
 use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Entity\Registration;
-use GS\FestivalBundle\Entity\Person;
+use GS\PersonBundle\Entity\Person;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadCategory implements FixtureInterface
+class LoadCategory implements FixtureInterface, ContainerAwareInterface
 {
+
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
     // Dans l'argument de la méthode load, l'objet $manager est l'EntityManager
     public function load(ObjectManager $manager)
@@ -36,10 +48,12 @@ class LoadCategory implements FixtureInterface
         $level2->setPrice(150.0);
 
         for ($i = 0; $i < 15; $i++) {
+            $phoneNumber = $this->container->get('libphonenumber.phone_number_util')->parse('0380581981', 'FR');
             $person = new Person();
             $person->setFirstName('Toto'.$i);
             $person->setLastName('Titi'.$i);
             $person->setEmail('bibi'.$i.'@gmail.com');
+            $person->setPhoneNumber($phoneNumber);
 
             $registration = new Registration();
             if ($i % 2 || $i > 10) {

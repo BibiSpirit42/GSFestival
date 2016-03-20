@@ -1,0 +1,4 @@
+services:
+#    gs_person.example:
+#        class: GS\PersonBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

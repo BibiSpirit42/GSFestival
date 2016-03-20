@@ -3,7 +3,7 @@
 namespace GS\FestivalBundle\Controller;
 
 use GS\FestivalBundle\Entity\Registration;
-use GS\FestivalBundle\Entity\Person;
+use GS\PersonBundle\Entity\Person;
 use GS\FestivalBundle\Form\RegistrationType;
 use GS\FestivalBundle\Form\RegistrationEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,7 +35,7 @@ class RegistrationController extends Controller
 
         if ($form->handleRequest($request)->isValid()) {
             $request->getSession()->set('email', $form->get('email')->getData());
-            $person = $em->getRepository('GSFestivalBundle:Person')->findOneByEmail($form->get('email')->getData());
+            $person = $em->getRepository('GSPersonBundle:Person')->findOneByEmail($form->get('email')->getData());
             if ($person !== null) {
                 $registrations = $em->getRepository('GSFestivalBundle:Registration')->getForPersonAndFestival($festival, $person);
                 if ($registrations !== null) {
@@ -66,7 +66,7 @@ class RegistrationController extends Controller
         $registration = new Registration();
         $email = $request->getSession()->get('email');
         $request->getSession()->remove('email');
-        $person = $em->getRepository('GSFestivalBundle:Person')->findOneByEmail($email);
+        $person = $em->getRepository('GSPersonBundle:Person')->findOneByEmail($email);
         if ($person === null) {
             $person = new Person();
             $person->setEmail($email);

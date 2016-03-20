@@ -19,6 +19,8 @@ class AppKernel extends Kernel
             new GS\FestivalBundle\GSFestivalBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Ivory\OrderedFormBundle\IvoryOrderedFormBundle(),
+            new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
+            new GS\PersonBundle\GSPersonBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

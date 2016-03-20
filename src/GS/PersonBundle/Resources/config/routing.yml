@@ -1,0 +1,30 @@
+
+gs_person_homepage:
+    path:     /{page}
+    defaults:
+        _controller: GSPersonBundle:Person:index
+        page: 1
+    requirements:
+        page: \d*
+
+gs_person_add:
+    path:     /add
+    defaults:  { _controller: GSPersonBundle:Person:add }
+
+gs_person_view:
+    path:     /view/{id}
+    defaults:  { _controller: GSPersonBundle:Person:view }
+    requirements:
+        id: \d+
+
+gs_person_edit:
+    path:     /edit/{id}
+    defaults:  { _controller: GSPersonBundle:Person:edit }
+    requirements:
+        id: \d+
+
+gs_person_delete:
+    path:     /delete/{id}
+    defaults:  { _controller: GSPersonBundle:Person:delete }
+    requirements:
+        id: \d+

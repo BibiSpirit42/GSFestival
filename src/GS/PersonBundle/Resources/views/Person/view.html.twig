@@ -1,4 +1,4 @@
-{% extends "GSFestivalBundle::layout.html.twig" %}
+{% extends "GSPersonBundle::layout.html.twig" %}
 
 {% block title %}
     Lecture d'une personne - {{ parent() }}
@@ -10,7 +10,10 @@
 
     <h2>Email</h2>
     {{ person.email }}
-
+    
+    <h2>Téléphone</h2>
+    {{ phone_number_format(person.phoneNumber) }}
+    
     <h3>Liste des inscriptions :</h3>
     <ul>
         {% for registration in person.registrations %}

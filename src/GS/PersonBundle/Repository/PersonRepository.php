@@ -1,6 +1,6 @@
 <?php
 
-namespace GS\FestivalBundle\Repository;
+namespace GS\PersonBundle\Repository;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 

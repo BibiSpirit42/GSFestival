@@ -109,33 +109,3 @@ gs_payment_add:
     requirements:
         id: \d+
 
-
-gs_person_homepage:
-    path:     /person/{page}
-    defaults:
-        _controller: GSFestivalBundle:Person:index
-        page: 1
-    requirements:
-        page: \d*
-
-gs_person_add:
-    path:     /person/add
-    defaults:  { _controller: GSFestivalBundle:Person:add }
-
-gs_person_view:
-    path:     /person/view/{id}
-    defaults:  { _controller: GSFestivalBundle:Person:view }
-    requirements:
-        id: \d+
-
-gs_person_edit:
-    path:     /person/edit/{id}
-    defaults:  { _controller: GSFestivalBundle:Person:edit }
-    requirements:
-        id: \d+
-
-gs_person_delete:
-    path:     /person/delete/{id}
-    defaults:  { _controller: GSFestivalBundle:Person:delete }
-    requirements:
-        id: \d+

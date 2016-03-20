@@ -9,8 +9,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-use GS\FestivalBundle\Form\PersonInRegistrationType;
+use GS\PersonBundle\Form\PersonInRegistrationType;
 
 class RegistrationType extends AbstractType
 {
@@ -33,6 +36,10 @@ class RegistrationType extends AbstractType
                     'choice_label' => 'name',
                     'choices' => $options['festival']->getLevels(),
                 ))
+                ->add('offerHousing', CheckboxType::class)
+                ->add('doubleBeds', IntegerType::class)
+                ->add('singleBeds', IntegerType::class)
+                ->add('comments', TextareaType::class)
                 ->add('partnerFirstName', TextType::class, array('required' => false))
                 ->add('partnerLastName', TextType::class, array('required' => false))
                 ->add('partnerEmail', TextType::class, array('required' => false))

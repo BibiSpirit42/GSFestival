@@ -1,3 +1,7 @@
+gs_person:
+    resource: "@GSPersonBundle/Resources/config/routing.yml"
+    prefix:   /person
+
 gs_festival:
     resource: "@GSFestivalBundle/Resources/config/routing.yml"
     prefix:   /festival

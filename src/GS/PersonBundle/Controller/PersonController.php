@@ -1,9 +1,9 @@
 <?php
 
-namespace GS\FestivalBundle\Controller;
+namespace GS\PersonBundle\Controller;
 
-use GS\FestivalBundle\Entity\Person;
-use GS\FestivalBundle\Form\PersonType;
+use GS\PersonBundle\Entity\Person;
+use GS\PersonBundle\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -24,7 +24,7 @@ class PersonController extends Controller
         // On récupère notre objet Paginator
         $listPersons = $this->getDoctrine()
                 ->getManager()
-                ->getRepository('GSFestivalBundle:Person')
+                ->getRepository('GSPersonBundle:Person')
                 ->getPersons($page, $nbPerPage)
         ;
 
@@ -36,7 +36,7 @@ class PersonController extends Controller
             throw $this->createNotFoundException("La page " . $page . " n'existe pas.");
         }
 
-        return $this->render('GSFestivalBundle:Person:index.html.twig', array(
+        return $this->render('GSPersonBundle:Person:index.html.twig', array(
                     'listPersons' => $listPersons,
                     'nbPages' => $nbPages,
                     'page' => $page
@@ -49,13 +49,13 @@ class PersonController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Pour récupérer une annonce unique : on utilise find()
-        $person = $em->getRepository('GSFestivalBundle:Person')->find($id);
+        $person = $em->getRepository('GSPersonBundle:Person')->find($id);
 
         // On vérifie que l'annonce avec cet id existe bien
         if ($person === null) {
             throw $this->createNotFoundException("Le personne d'id " . $id . " n'existe pas.");
         }
-        return $this->render('GSFestivalBundle:Person:view.html.twig', array(
+        return $this->render('GSPersonBundle:Person:view.html.twig', array(
                     'person' => $person
         ));
     }
@@ -75,7 +75,7 @@ class PersonController extends Controller
             return $this->redirectToRoute('gs_person_view', array('id' => $person->getId()));
         }
 
-        return $this->render('GSFestivalBundle:Person:add.html.twig', array(
+        return $this->render('GSPersonBundle:Person:add.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -86,7 +86,7 @@ class PersonController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // Pour récupérer une annonce unique : on utilise find()
-        $person = $em->getRepository('GSFestivalBundle:Person')->find($id);
+        $person = $em->getRepository('GSPersonBundle:Person')->find($id);
 
         // On vérifie que l'annonce avec cet id existe bien
         if ($person === null) {
@@ -103,7 +103,7 @@ class PersonController extends Controller
             return $this->redirectToRoute('gs_person_view', array('id' => $person->getId()));
         }
         
-        return $this->render('GSFestivalBundle:Person:edit.html.twig', array(
+        return $this->render('GSPersonBundle:Person:edit.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
@@ -114,7 +114,7 @@ class PersonController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         // On récupère l'entité correspondant à l'id $id
-        $person = $em->getRepository('GSFestivalBundle:Person')->find($id);
+        $person = $em->getRepository('GSPersonBundle:Person')->find($id);
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
         if ($person == null) {
@@ -133,7 +133,7 @@ class PersonController extends Controller
         }
 
         // Si la requête est en GET, on affiche une page de confirmation avant de supprimer
-        return $this->render('GSFestivalBundle:Person:delete.html.twig', array(
+        return $this->render('GSPersonBundle:Person:delete.html.twig', array(
                     'person' => $person,
                     'form' => $form->createView()
         ));

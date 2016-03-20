@@ -55,7 +55,7 @@ class Registration
     private $level;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GS\FestivalBundle\Entity\Person", inversedBy="registrations", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="GS\PersonBundle\Entity\Person", inversedBy="registrations", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Valid()
      */
@@ -109,6 +109,28 @@ class Registration
      * @ORM\ManyToOne(targetEntity="GS\FestivalBundle\Entity\Registration")
      */
     private $partner;
+
+    /**
+     * @ORM\Column(name="offerHousing", type="boolean")
+     */
+    private $offerHousing = false;
+
+    /**
+     * @ORM\Column(name="doubleBeds", type="smallint")
+     * @Assert\GreaterThanOrEqual(0)
+     */
+    private $doubleBeds = 0;
+
+    /**
+     * @ORM\Column(name="singleBeds", type="smallint")
+     * @Assert\GreaterThanOrEqual(0)
+     */
+    private $singleBeds = 0;
+
+    /**
+     * @ORM\Column(name="comments", type="text", nullable=true)
+     */
+    private $comments;
 
     public function __construct()
     {
@@ -226,11 +248,11 @@ class Registration
     /**
      * Set person
      *
-     * @param \GS\FestivalBundle\Entity\Person $person
+     * @param \GS\PersonBundle\Entity\Person $person
      *
      * @return Registration
      */
-    public function setPerson(\GS\FestivalBundle\Entity\Person $person)
+    public function setPerson(\GS\PersonBundle\Entity\Person $person)
     {
         $this->person = $person;
 
@@ -240,7 +262,7 @@ class Registration
     /**
      * Get person
      *
-     * @return \GS\FestivalBundle\Entity\Person
+     * @return \GS\PersonBundle\Entity\Person
      */
     public function getPerson()
     {
@@ -452,5 +474,101 @@ class Registration
     public function getAssignmentDate()
     {
         return $this->assignmentDate;
+    }
+
+    /**
+     * Set offerHousing
+     *
+     * @param boolean $offerHousing
+     *
+     * @return Registration
+     */
+    public function setOfferHousing($offerHousing)
+    {
+        $this->offerHousing = $offerHousing;
+
+        return $this;
+    }
+
+    /**
+     * Get offerHousing
+     *
+     * @return boolean
+     */
+    public function getOfferHousing()
+    {
+        return $this->offerHousing;
+    }
+
+    /**
+     * Set doubleBeds
+     *
+     * @param integer $doubleBeds
+     *
+     * @return Registration
+     */
+    public function setDoubleBeds($doubleBeds)
+    {
+        $this->doubleBeds = $doubleBeds;
+
+        return $this;
+    }
+
+    /**
+     * Get doubleBeds
+     *
+     * @return integer
+     */
+    public function getDoubleBeds()
+    {
+        return $this->doubleBeds;
+    }
+
+    /**
+     * Set singleBeds
+     *
+     * @param integer $singleBeds
+     *
+     * @return Registration
+     */
+    public function setSingleBeds($singleBeds)
+    {
+        $this->singleBeds = $singleBeds;
+
+        return $this;
+    }
+
+    /**
+     * Get singleBeds
+     *
+     * @return integer
+     */
+    public function getSingleBeds()
+    {
+        return $this->singleBeds;
+    }
+
+    /**
+     * Set comments
+     *
+     * @param string $comments
+     *
+     * @return Registration
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get comments
+     *
+     * @return string
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }
