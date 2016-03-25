@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-use GS\PersonBundle\Form\PersonInRegistrationType;
+use GS\PersonBundle\Form\PersonType;
 
 class RegistrationType extends AbstractType
 {
@@ -24,7 +24,7 @@ class RegistrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('person', PersonInRegistrationType::class)
+                ->add('person', PersonType::class)
                 ->add('role', ChoiceType::class, array(
                     'choices' => array(
                         'Guideur/Cavalier' => true,
@@ -36,10 +36,10 @@ class RegistrationType extends AbstractType
                     'choice_label' => 'name',
                     'choices' => $options['festival']->getLevels(),
                 ))
-                ->add('offerHousing', CheckboxType::class)
+                ->add('offerHousing', CheckboxType::class, array('required' => false))
                 ->add('doubleBeds', IntegerType::class)
                 ->add('singleBeds', IntegerType::class)
-                ->add('comments', TextareaType::class)
+                ->add('comments', TextareaType::class, array('required' => false))
                 ->add('partnerFirstName', TextType::class, array('required' => false))
                 ->add('partnerLastName', TextType::class, array('required' => false))
                 ->add('partnerEmail', TextType::class, array('required' => false))

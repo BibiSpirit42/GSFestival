@@ -65,21 +65,26 @@ class RegistrationController extends Controller
 
         $registration = new Registration();
         $email = $request->getSession()->get('email');
-        $request->getSession()->remove('email');
         $person = $em->getRepository('GSPersonBundle:Person')->findOneByEmail($email);
         if ($person === null) {
             $person = new Person();
             $person->setEmail($email);
         }
         $registration->setPerson($person);
-        $form = $this->createForm(RegistrationType::class, $registration, array('festival' => $festival));            
+        $form = $this->createForm(RegistrationType::class, $registration, array('festival' => $festival));
 
         if ($form->handleRequest($request)->isValid()) {
             $form->get('level')->getData()->addRegistration($registration);
+            $partner = $em->getRepository('GSFestivalBundle:Registration')->getPartner($registration);
+            if ( count($partner) == 1 ) {
+                $registration->setPartner($partner[0]);
+            }
+
             $em->persist($registration);
             $em->flush();
 
             $request->getSession()->getFlashBag()->add('success', 'Inscription bien enregistrée.');
+            $request->getSession()->remove('email');
 
             return $this->redirectToRoute('gs_registration_view', array('id' => $registration->getId()));
         }
@@ -99,9 +104,11 @@ class RegistrationController extends Controller
         if ($registration === null) {
             throw $this->createNotFoundException("L'inscription d'id " . $id . " n'existe pas.");
         }
+        $partner = $em->getRepository('GSFestivalBundle:Registration')->findPartner($registration);
 
         return $this->render('GSFestivalBundle:Registration:view.html.twig', array(
                     'registration' => $registration,
+                    'partners' => $partner,
         ));
     }
 
@@ -116,7 +123,11 @@ class RegistrationController extends Controller
         }
 
         $festival = $registration->getLevel()->getFestival();
-        $form = $this->createForm(RegistrationEditType::class, $registration, array('festival' => $festival));
+        $partners = $em->getRepository('GSFestivalBundle:Registration')->getPossiblePartners($registration);
+        $form = $this->createForm(RegistrationEditType::class, $registration, array(
+            'festival' => $festival,
+            'partners' => $partners,
+        ));
 
         if ($form->handleRequest($request)->isValid()) {
             $em->flush();

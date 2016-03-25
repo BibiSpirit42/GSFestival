@@ -59,6 +59,11 @@ class Person
     private $phoneNumber;
 
     /**
+     * @ORM\OneToOne(targetEntity="GS\PersonBundle\Entity\Address", cascade={"persist", "remove"})
+     */
+    private $address;
+
+    /**
      * @ORM\OneToMany(targetEntity="GS\FestivalBundle\Entity\Registration", mappedBy="person", cascade={"remove"})
      */
     private $registrations;
@@ -220,5 +225,29 @@ class Person
     public function getPhoneNumber()
     {
         return $this->phoneNumber;
+    }
+
+    /**
+     * Set address
+     *
+     * @param \GS\PersonBundle\Entity\Address $address
+     *
+     * @return Person
+     */
+    public function setAddress(\GS\PersonBundle\Entity\Address $address = null)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return \GS\PersonBundle\Entity\Address
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

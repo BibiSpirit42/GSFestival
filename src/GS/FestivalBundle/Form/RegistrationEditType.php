@@ -4,6 +4,7 @@ namespace GS\FestivalBundle\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 
 class RegistrationEditType extends RegistrationType
@@ -20,16 +21,27 @@ class RegistrationEditType extends RegistrationType
                 ->add('partner', EntityType::class, array(
                     'class' => 'GSFestivalBundle:Registration',
                     'choice_label' => 'displayName',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('u')
-                                ->leftJoin('u.person', 'per')
-                                ->addSelect('per')
-                                ->orderBy('per.lastName', 'ASC');
-                    },
+                    'choices' => $options['partners'],
                     'required' => false,
                     'empty_data' => null,
                 ))
         ;
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+        
+        $resolver->setRequired(array(
+            'partners',
+        ));
+
+        $resolver->setDefaults(array(
+            'partners' => null,
+        ));
     }
 
 }

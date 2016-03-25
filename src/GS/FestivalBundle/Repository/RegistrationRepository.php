@@ -22,27 +22,48 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
         $followers = $this->getFollowersForLevel($level);
 
         $result = array();
-        foreach ($leaders as $leader) {
-            $result[] = array($leader, $this->getAssociatedFollower($leader, $followers));
-        }
-        
-        foreach ($followers as $follower) {
-            $result[] = [null, $follower];
+        while ($current = $this->getNextRegistration($leaders, $followers)) {
+            if ($current->getRole() == true) {
+                $result[] = array($current, $this->getAssociatedPartner($current, $followers));
+            }
+            else
+            {
+                $result[] = array($this->getAssociatedPartner($current, $leaders), $current);
+            }
         }
         
         return $result;
     }
 
-    private function getAssociatedFollower(Registration $leader, array &$followers)
+    private function getNextRegistration(array &$leaders, array &$followers)
     {
         $result = null;
-        if (null !== $leader->getPartner()) {
-            $result = $leader->getPartner();
-            if (($key = array_search($leader->getPartner(), $followers)) !== false) {
-                unset($followers[$key]);
-            }
-        } elseif ($followers) {
+        if (count($leaders) == 0) {
             $result = array_shift($followers);
+        }
+        else if (count($followers) == 0) {
+            $result = array_shift($leaders);
+        }
+        else if ($leaders[0]->getId() < $followers[0]->getId()) {
+            $result = array_shift($leaders);
+        }
+        else if ($leaders[0]->getId() > $followers[0]->getId()) {
+            $result = array_shift($followers);
+        }
+        return $result;
+    }
+
+    private function getAssociatedPartner(Registration $current, array &$registrations)
+    {
+        $result = null;
+        if (null !== $current->getPartner()) {
+            if (($key = array_search($current->getPartner(), $registrations)) !== false) {
+                $result = $current->getPartner();
+                unset($registrations[$key]);
+                $registrations = array_values($registrations);
+            }
+        } elseif ($registrations) {
+            $result = array_shift($registrations);
         }
         return $result;
     }
@@ -83,6 +104,44 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
                 ->andWhere('lvl.festival = :festival')
                 ->setParameter('festival', $festival)
                 ->setParameter('cancelled', 'cancelled');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPartner(Registration $registration)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->leftJoin('a.level', 'lvl')
+                ->addSelect('lvl')
+                ->leftJoin('a.person', 'p')
+                ->addSelect('p')
+                ->where('lvl = :lvl')
+                ->andwhere('a.status != :cancelled')
+                ->andWhere('a.role != :role')
+                ->andWhere($qb->expr()->orX('p.email = :email', 'p.firstName = :fn', 'p.lastName = :ln'))
+                ->setParameter('role', $registration->getRole())
+                ->setParameter('email', $registration->getPartnerEmail())
+                ->setParameter('fn', $registration->getPartnerFirstName())
+                ->setParameter('ln', $registration->getPartnerLastName())
+                ->setParameter('cancelled', 'cancelled')
+                ->setParameter('lvl', $registration->getLevel());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPossiblePartners(Registration $registration)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->leftJoin('a.level', 'lvl')
+                ->addSelect('lvl')
+                ->andWhere('lvl = :lvl')
+                ->andwhere('a.status != :cancelled')
+                ->andWhere('a.role != :role')
+                ->setParameter('role', $registration->getRole())
+                ->setParameter('cancelled', 'cancelled')
+                ->setParameter('lvl', $registration->getLevel());
 
         return $qb->getQuery()->getResult();
     }

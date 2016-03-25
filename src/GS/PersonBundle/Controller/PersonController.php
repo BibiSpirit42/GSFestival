@@ -7,6 +7,7 @@ use GS\PersonBundle\Form\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class PersonController extends Controller
 {
@@ -64,6 +65,7 @@ class PersonController extends Controller
     {
         $person = new Person();
         $form = $this->createForm(PersonType::class, $person);
+        $form->add('submit', SubmitType::class);
         
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -94,7 +96,8 @@ class PersonController extends Controller
         }
         
         $form = $this->createForm(PersonType::class, $person);
-        
+        $form->add('submit', SubmitType::class);
+
         if ($form->handleRequest($request)->isValid()) {
             $em->flush();
 

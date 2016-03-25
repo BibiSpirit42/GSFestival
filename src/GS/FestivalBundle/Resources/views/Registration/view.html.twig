@@ -23,4 +23,14 @@
         <dl>{{ registration.remainingPayment }}</dl>
     </dl>
 
+    <ul>
+        {% for partner in partners %}
+            <li>
+                {{ partner.person.firstName }} {{ partner.person.lastName }}
+            </li>
+        {% else %}
+            <li>Pas (encore !) de partenaire</li>
+        {% endfor %}
+    </ul>
+
 {% endblock %}

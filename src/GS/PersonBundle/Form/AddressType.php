@@ -6,13 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
-use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
-use libphonenumber\PhoneNumberFormat;
-
-use GS\PersonBundle\Form\AddressType;
-
-class PersonType extends AbstractType
+class AddressType extends AbstractType
 {
 
     /**
@@ -22,13 +18,13 @@ class PersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('email', TextType::class)
-                ->add('firstName', TextType::class)
-                ->add('lastName', TextType::class)
-                ->add('address', AddressType::class)
-                ->add('phoneNumber', PhoneNumberType::class, array('default_region' => 'FR', 'format' => PhoneNumberFormat::NATIONAL))
+                ->add('street', TextType::class)
+                ->add('street2', TextType::class, array('required' => false))
+                ->add('zipCode', TextType::class)
+                ->add('county', TextType::class, array('required' => false))
+                ->add('state', TextType::class, array('required' => false))
+                ->add('country', CountryType::class)
         ;
-       
     }
 
     /**
@@ -37,7 +33,7 @@ class PersonType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'GS\PersonBundle\Entity\Person',
+            'data_class' => 'GS\PersonBundle\Entity\Address',
         ));
     }
 

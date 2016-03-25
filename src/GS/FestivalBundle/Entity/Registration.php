@@ -279,6 +279,9 @@ class Registration
     public function setPartner(\GS\FestivalBundle\Entity\Registration $partner = null)
     {
         $this->partner = $partner;
+        if ( null === $partner->getPartner() ) {
+            $partner->setPartner($this);
+        }
 
         return $this;
     }
