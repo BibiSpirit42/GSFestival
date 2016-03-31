@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Registration
@@ -106,6 +107,7 @@ class Registration
     private $payments;
 
     /**
+     * @Exclude
      * @ORM\ManyToOne(targetEntity="GS\FestivalBundle\Entity\Registration")
      */
     private $partner;
@@ -126,6 +128,21 @@ class Registration
      * @Assert\GreaterThanOrEqual(0)
      */
     private $singleBeds = 0;
+
+    /**
+     * @ORM\Column(name="requestHousing", type="boolean")
+     */
+    private $requestHousing = false;
+
+    /**
+     * @ORM\Column(name="shareBed", type="string", length=255, nullable=true)
+     */
+    private $shareBed;
+
+    /**
+     * @ORM\Column(name="roommates", type="text", nullable=true)
+     */
+    private $roommates;
 
     /**
      * @ORM\Column(name="comments", type="text", nullable=true)
@@ -573,5 +590,77 @@ class Registration
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Set requestHousing
+     *
+     * @param boolean $requestHousing
+     *
+     * @return Registration
+     */
+    public function setRequestHousing($requestHousing)
+    {
+        $this->requestHousing = $requestHousing;
+
+        return $this;
+    }
+
+    /**
+     * Get requestHousing
+     *
+     * @return boolean
+     */
+    public function getRequestHousing()
+    {
+        return $this->requestHousing;
+    }
+
+    /**
+     * Set shareBed
+     *
+     * @param string $shareBed
+     *
+     * @return Registration
+     */
+    public function setShareBed($shareBed)
+    {
+        $this->shareBed = $shareBed;
+
+        return $this;
+    }
+
+    /**
+     * Get shareBed
+     *
+     * @return string
+     */
+    public function getShareBed()
+    {
+        return $this->shareBed;
+    }
+
+    /**
+     * Set roommates
+     *
+     * @param string $roommates
+     *
+     * @return Registration
+     */
+    public function setRoommates($roommates)
+    {
+        $this->roommates = $roommates;
+
+        return $this;
+    }
+
+    /**
+     * Get roommates
+     *
+     * @return string
+     */
+    public function getRoommates()
+    {
+        return $this->roommates;
     }
 }

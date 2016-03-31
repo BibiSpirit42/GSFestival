@@ -4,10 +4,13 @@ namespace GS\FestivalBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Festival
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table(name="festival")
  * @ORM\Entity(repositoryClass="GS\FestivalBundle\Repository\FestivalRepository")
  */
@@ -33,6 +36,7 @@ class Festival
     /**
      * @var string
      *
+     * @Expose
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;

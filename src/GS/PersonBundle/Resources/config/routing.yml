@@ -8,8 +8,10 @@ gs_person_homepage:
         page: \d*
 
 gs_person_add:
-    path:     /add
+    path:     /{_locale}/add
     defaults:  { _controller: GSPersonBundle:Person:add }
+    requirements:
+        _locale: '%app.locales%'
 
 gs_person_view:
     path:     /view/{id}

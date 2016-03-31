@@ -54,24 +54,33 @@ gs_level_delete:
         id: \d+
 
 
+gs_registration_index:
+    path:     /registration
+    defaults:
+        _controller: GSFestivalBundle:Registration:index
+
 gs_registration_add:
-    path:     /registration/add/{id}
+    path:     /{_locale}/registration/add/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:add }
     requirements:
         id: \d+
+        _locale: '%app.locales%'
 
 gs_registration_add2:
-    path:     /registration/add2/{id}
+    path:     /{_locale}/registration/add2/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:add2 }
     requirements:
         id: \d+
+        _locale: '%app.locales%'
 
 gs_registration_view:
-    path:     /registration/{id}
+    path:     /registration/view/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:view }
     requirements:
         id: \d+
-
+    options:
+        expose: true
+        
 gs_registration_edit:
     path:     /registration/edit/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:edit }

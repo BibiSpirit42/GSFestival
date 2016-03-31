@@ -1,0 +1,15 @@
+## YAML Template.
+---
+person:
+    email: Email address
+    firstName: First name
+    lastName: Last name
+    address: Address
+    phone: Phone number
+address:
+    street: Street
+    street2: Street (continuation)
+    zipCode: Zip code
+    county: County
+    state: State
+    country: Country

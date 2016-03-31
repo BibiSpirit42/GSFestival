@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Ivory\OrderedFormBundle\IvoryOrderedFormBundle(),
             new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
             new GS\PersonBundle\GSPersonBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

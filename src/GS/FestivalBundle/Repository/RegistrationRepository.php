@@ -2,6 +2,8 @@
 
 namespace GS\FestivalBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Entity\Registration;
 use GS\FestivalBundle\Entity\Festival;
@@ -16,6 +18,21 @@ use GS\PersonBundle\Entity\Person;
 class RegistrationRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    public function getRegistrations($festivalId = null)
+    {
+        $qb = $this->createQueryBuilder('a');
+        if ($festivalId !== null) {
+            $qb
+                    ->leftJoin('a.level', 'lvl')
+                    ->addSelect('lvl')
+                    ->leftJoin('lvl.festival', 'festival')
+                    ->addSelect('festival')
+                    ->andWhere('festival.id = :id')
+                    ->setParameter('id', $festivalId);
+        }
+        return $qb->getQuery()->getResult();
+    }
+
     public function getSortedForLevel(Level $level)
     {
         $leaders = $this->getLeadersForLevel($level);
@@ -25,13 +42,11 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
         while ($current = $this->getNextRegistration($leaders, $followers)) {
             if ($current->getRole() == true) {
                 $result[] = array($current, $this->getAssociatedPartner($current, $followers));
-            }
-            else
-            {
+            } else {
                 $result[] = array($this->getAssociatedPartner($current, $leaders), $current);
             }
         }
-        
+
         return $result;
     }
 
@@ -40,14 +55,11 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
         $result = null;
         if (count($leaders) == 0) {
             $result = array_shift($followers);
-        }
-        else if (count($followers) == 0) {
+        } else if (count($followers) == 0) {
             $result = array_shift($leaders);
-        }
-        else if ($leaders[0]->getId() < $followers[0]->getId()) {
+        } else if ($leaders[0]->getId() < $followers[0]->getId()) {
             $result = array_shift($leaders);
-        }
-        else if ($leaders[0]->getId() > $followers[0]->getId()) {
+        } else if ($leaders[0]->getId() > $followers[0]->getId()) {
             $result = array_shift($followers);
         }
         return $result;
@@ -119,10 +131,9 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
                 ->where('lvl = :lvl')
                 ->andwhere('a.status != :cancelled')
                 ->andWhere('a.role != :role')
-                ->andWhere($qb->expr()->orX('p.email = :email', 'p.firstName = :fn', 'p.lastName = :ln'))
+                ->andWhere($qb->expr()->orX('p.email = :email', 'p.lastName = :ln'))
                 ->setParameter('role', $registration->getRole())
                 ->setParameter('email', $registration->getPartnerEmail())
-                ->setParameter('fn', $registration->getPartnerFirstName())
                 ->setParameter('ln', $registration->getPartnerLastName())
                 ->setParameter('cancelled', 'cancelled')
                 ->setParameter('lvl', $registration->getLevel());

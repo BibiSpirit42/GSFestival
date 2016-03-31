@@ -3,10 +3,13 @@
 namespace GS\FestivalBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Level
  *
+ * @ExclusionPolicy("all")
  * @ORM\Table(name="level")
  * @ORM\Entity(repositoryClass="GS\FestivalBundle\Repository\LevelRepository")
  */
@@ -25,6 +28,7 @@ class Level
     /**
      * @var string
      *
+     * @Expose
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -65,6 +69,7 @@ class Level
     private $price;
 
     /**
+     * @Expose
      * @ORM\ManyToOne(targetEntity="GS\FestivalBundle\Entity\Festival", inversedBy="levels")
      * @ORM\JoinColumn(nullable=false)
      */

@@ -19,6 +19,7 @@ class RegistrationEditType extends RegistrationType
         parent::buildForm($builder, $options);
         $builder
                 ->add('partner', EntityType::class, array(
+                    'label' => 'registration.partner.partner',
                     'class' => 'GSFestivalBundle:Registration',
                     'choice_label' => 'displayName',
                     'choices' => $options['partners'],

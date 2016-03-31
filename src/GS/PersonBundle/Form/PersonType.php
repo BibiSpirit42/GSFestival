@@ -22,13 +22,24 @@ class PersonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('email', TextType::class)
-                ->add('firstName', TextType::class)
-                ->add('lastName', TextType::class)
-                ->add('address', AddressType::class)
-                ->add('phoneNumber', PhoneNumberType::class, array('default_region' => 'FR', 'format' => PhoneNumberFormat::NATIONAL))
+                ->add('email', TextType::class, array(
+                    'label' => 'person.email',
+                ))
+                ->add('firstName', TextType::class, array(
+                    'label' => 'person.firstName',
+                ))
+                ->add('lastName', TextType::class, array(
+                    'label' => 'person.lastName',
+                ))
+                ->add('address', AddressType::class, array(
+                    'label' => 'person.address',
+                ))
+                ->add('phoneNumber', PhoneNumberType::class, array(
+                    'label' => 'person.phone',
+                    'default_region' => 'FR',
+                    'format' => PhoneNumberFormat::NATIONAL
+                ))
         ;
-       
     }
 
     /**

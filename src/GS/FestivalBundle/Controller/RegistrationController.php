@@ -11,8 +11,33 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use JMS\Serializer\SerializerBuilder;
+
 class RegistrationController extends Controller
 {
+
+    public function indexAction(Request $request)
+    {
+        $festival = null;
+        if ( $request->isMethod('GET') ) {
+            if ( $request->query->has('festival') ) {
+                $festival = $request->query->get('festival');
+            }
+        }
+
+        $listResgistrations = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('GSFestivalBundle:Registration')
+                ->getRegistrations($festival)
+        ;
+
+        $nbRegistration = count($listResgistrations);
+
+        return $this->render('GSFestivalBundle:Registration:index.html.twig', array(
+                    'listResgistrations' => $listResgistrations,
+                    'nbResgistration' => $nbRegistration,
+        ));
+    }
 
     public function addAction($id, Request $request)
     {
@@ -28,6 +53,7 @@ class RegistrationController extends Controller
         $form = $this->createFormBuilder()
                 ->add('email', EmailType::class, array(
                     'data' => $request->getSession()->get('email'),
+                    'label' => 'registration.email'
                 ))
                 ->add('next', SubmitType::class, array('label' => 'Next step'))
                 ->getForm();
@@ -76,7 +102,7 @@ class RegistrationController extends Controller
         if ($form->handleRequest($request)->isValid()) {
             $form->get('level')->getData()->addRegistration($registration);
             $partner = $em->getRepository('GSFestivalBundle:Registration')->getPartner($registration);
-            if ( count($partner) == 1 ) {
+            if (count($partner) == 1) {
                 $registration->setPartner($partner[0]);
             }
 
@@ -104,11 +130,9 @@ class RegistrationController extends Controller
         if ($registration === null) {
             throw $this->createNotFoundException("L'inscription d'id " . $id . " n'existe pas.");
         }
-        $partner = $em->getRepository('GSFestivalBundle:Registration')->findPartner($registration);
 
         return $this->render('GSFestivalBundle:Registration:view.html.twig', array(
                     'registration' => $registration,
-                    'partners' => $partner,
         ));
     }
 
@@ -192,7 +216,7 @@ class RegistrationController extends Controller
             $request->getSession()->getFlashBag()->add('warning', 'Impossible de valider l\'inscription, vérifiez son status.');
             $done = true;
         }
-        
+
         if ($done) {
             return $this->redirectToRoute('gs_level_view', array(
                         'id' => $registration->getLevel()->getId(),
@@ -267,7 +291,7 @@ class RegistrationController extends Controller
             $message = \Swift_Message::newInstance()
                     ->setFrom('gsdf@grenobleswing.com')
                     ->setTo($registration->getPerson()->getEmail());
-            
+
             $options['firstName'] = $registration->getPerson()->getFirstName();
             $options['lastName'] = $registration->getPerson()->getLastName();
             $subject = '[GSDF 2016] ';
@@ -304,7 +328,7 @@ class RegistrationController extends Controller
             $message->setSubject($subject)
                     ->setBody($this->renderView($template, $options), 'text/html');
             $this->get('mailer')->send($message);
-            
+
             $registration->setStatus(preg_replace('/^pre_/', '', $registration->getStatus()));
             $em->flush();
 
@@ -312,7 +336,7 @@ class RegistrationController extends Controller
         } else {
             $request->getSession()->getFlashBag()->add('info', "L'email a déja été envoyé.");
         }
-        
+
         return $this->redirectToRoute('gs_level_view', array(
                     'id' => $registration->getLevel()->getId(),
         ));
