@@ -10,9 +10,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-
-use GS\FestivalBundle\Form\LevelType;
 
 class FestivalType extends AbstractType
 {
@@ -28,12 +25,6 @@ class FestivalType extends AbstractType
                 ->add('date', DateType::class)
                 ->add('location', TextType::class)
                 ->add('published', CheckboxType::class, array('required' => false))
-                ->add('levels', CollectionType::class, array(
-                    'entry_type' => LevelType::class,
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                ))
                 ->add('save', SubmitType::class)
         ;
     }

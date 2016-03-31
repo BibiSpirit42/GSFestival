@@ -2,6 +2,13 @@
 
 namespace GS\FestivalBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
+use GS\FestivalBundle\Entity\Level;
+use GS\FestivalBundle\Entity\Registration;
+use GS\FestivalBundle\Entity\Festival;
+use GS\PersonBundle\Entity\Person;
+
 /**
  * RegistrationRepository
  *
@@ -10,4 +17,144 @@ namespace GS\FestivalBundle\Repository;
  */
 class RegistrationRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getRegistrations($festivalId = null)
+    {
+        $qb = $this->createQueryBuilder('a');
+        if ($festivalId !== null) {
+            $qb
+                    ->leftJoin('a.level', 'lvl')
+                    ->addSelect('lvl')
+                    ->leftJoin('lvl.festival', 'festival')
+                    ->addSelect('festival')
+                    ->andWhere('festival.id = :id')
+                    ->setParameter('id', $festivalId);
+        }
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getSortedForLevel(Level $level)
+    {
+        $leaders = $this->getLeadersForLevel($level);
+        $followers = $this->getFollowersForLevel($level);
+
+        $result = array();
+        while ($current = $this->getNextRegistration($leaders, $followers)) {
+            if ($current->getRole() == true) {
+                $result[] = array($current, $this->getAssociatedPartner($current, $followers));
+            } else {
+                $result[] = array($this->getAssociatedPartner($current, $leaders), $current);
+            }
+        }
+
+        return $result;
+    }
+
+    private function getNextRegistration(array &$leaders, array &$followers)
+    {
+        $result = null;
+        if (count($leaders) == 0) {
+            $result = array_shift($followers);
+        } else if (count($followers) == 0) {
+            $result = array_shift($leaders);
+        } else if ($leaders[0]->getId() < $followers[0]->getId()) {
+            $result = array_shift($leaders);
+        } else if ($leaders[0]->getId() > $followers[0]->getId()) {
+            $result = array_shift($followers);
+        }
+        return $result;
+    }
+
+    private function getAssociatedPartner(Registration $current, array &$registrations)
+    {
+        $result = null;
+        if (null !== $current->getPartner()) {
+            if (($key = array_search($current->getPartner(), $registrations)) !== false) {
+                $result = $current->getPartner();
+                unset($registrations[$key]);
+                $registrations = array_values($registrations);
+            }
+        } elseif ($registrations) {
+            $result = array_shift($registrations);
+        }
+        return $result;
+    }
+
+    public function getLeadersForLevel(Level $level)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->where('a.level = :level')
+                ->setParameter('level', $level)
+                ->andWhere('a.role = :isTrue')
+                ->setParameter('isTrue', true);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getFollowersForLevel(Level $level)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->where('a.level = :level')
+                ->setParameter('level', $level)
+                ->andWhere('a.role = :isFalse')
+                ->setParameter('isFalse', false);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getForPersonAndFestival(Festival $festival, Person $person)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->leftJoin('a.level', 'lvl')
+                ->addSelect('lvl')
+                ->where('a.status != :cancelled')
+                ->andWhere('a.person = :person')
+                ->setParameter('person', $person)
+                ->andWhere('lvl.festival = :festival')
+                ->setParameter('festival', $festival)
+                ->setParameter('cancelled', 'cancelled');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPartner(Registration $registration)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->leftJoin('a.level', 'lvl')
+                ->addSelect('lvl')
+                ->leftJoin('a.person', 'p')
+                ->addSelect('p')
+                ->where('lvl = :lvl')
+                ->andwhere('a.status != :cancelled')
+                ->andWhere('a.role != :role')
+                ->andWhere($qb->expr()->orX('p.email = :email', 'p.lastName = :ln'))
+                ->setParameter('role', $registration->getRole())
+                ->setParameter('email', $registration->getPartnerEmail())
+                ->setParameter('ln', $registration->getPartnerLastName())
+                ->setParameter('cancelled', 'cancelled')
+                ->setParameter('lvl', $registration->getLevel());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getPossiblePartners(Registration $registration)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+                ->leftJoin('a.level', 'lvl')
+                ->addSelect('lvl')
+                ->andWhere('lvl = :lvl')
+                ->andwhere('a.status != :cancelled')
+                ->andWhere('a.role != :role')
+                ->setParameter('role', $registration->getRole())
+                ->setParameter('cancelled', 'cancelled')
+                ->setParameter('lvl', $registration->getLevel());
+
+        return $qb->getQuery()->getResult();
+    }
+
 }

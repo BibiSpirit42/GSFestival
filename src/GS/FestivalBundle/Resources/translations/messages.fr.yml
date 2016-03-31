@@ -1,0 +1,29 @@
+## YAML Template.
+---
+registration:
+    id: Id
+    title: Formulaire d'inscription
+    email: Adresse email
+    person: Informations personnelles
+    role:
+        label: Rôle
+        leader: Guideur/Cavalier
+        follower: Suiveur/Cavaliere
+    level: Niveau
+    offerHousing: Je propose un hébergement
+    doubleBeds: Nombre de lits double
+    singleBeds: Nombre de lits simple
+    requestHousing: Si possible, je souhaiterais bénéficier d'un hébergement
+    shareBed: Je souhaiterais partager mon lit avec
+    roommates: Si possible, je souhaiterais être héberger avec ou proche de
+    comments: Commentaires
+    submit: Envoyer
+    partner:
+        firstName: Prénom de mon/ma partenaire
+        lastName: Nom de mon/ma partenaire
+        email: Adresse email de mon/ma partenaire
+        partner: Partenaire
+level:
+    name: Niveau
+festival:
+    name: Festival

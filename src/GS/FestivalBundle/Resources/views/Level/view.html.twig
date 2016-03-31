@@ -1,0 +1,121 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Lecture d'un niveau - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+    <h2>{{ level.name }}</h2>
+
+    <h3>Description</h3>
+    <div class="well">
+        {{ level.description }}
+    </div>
+
+    <h3>Capacite</h3>
+    {{ level.capacity }} {% if level.solo %} personnes. {% else %} couples + {{ level.extraPerson }} suiveuses. {% endif %}
+
+    <h3>Prix</h3>
+    {{ level.price }} &euro;
+
+    <h3>Liste des inscriptions</h3>
+    Il y a {{ level.nbRegistrations }} inscriptions :
+    {% if level.nbRegistrations == 0 %}
+        Pas (encore !) d'inscriptions
+    {% else %}
+        <table class="table">
+            <tr>
+                <th>
+                </th>
+                <th>
+                    Leaders
+                </th>
+                <th>
+                    Followers
+                </th>
+            </tr>
+            {% set i = 1 %}
+            {% for couple in couples %}
+                <tr>
+                    <td>
+                        {{ i }}
+                        {% set i = i + 1 %}
+                    </td>
+                    {% for registration in couple %}
+                        {% if registration is not null %}
+                            <td class="{{ registration.status }}">
+                                {{ registration.person.firstName }} {{ registration.person.lastName }}
+                                {% if registration.status == 'received' or registration.status matches '/assigned/' %}
+                                    <a href="{{ path('gs_registration_waiting', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Mettre en liste d'attente">
+                                        <i class="glyphicon glyphicon-list"></i>
+                                    </a>
+                                {% endif %}
+                                {% if registration.status matches '/assigned/' %}
+                                    <a href="{{ path('gs_payment_add', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Ajouter paiement">
+                                        <i class="glyphicon glyphicon-euro"></i>
+                                    </a>
+                                {% endif %}
+                                {% if registration.status == 'received' or registration.status matches '/waiting/' %}
+                                    <a href="{{ path('gs_registration_validate', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Valider">
+                                        <i class="glyphicon glyphicon-ok"></i>
+                                    </a>
+                                {% endif %}
+                                {% if registration.status matches '/^pre_/' %}
+                                    <a href="{{ path('gs_registration_email', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                       data-toggle="tooltip" data-placement="top" title="Envoyer email">
+                                        <i class="glyphicon glyphicon-envelope"></i>
+                                    </a>
+                                {% endif %}
+                                <a href="{{ path('gs_registration_view', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                   data-toggle="tooltip" data-placement="top" title="Voir">
+                                    <i class="glyphicon glyphicon-eye-open"></i>
+                                </a>
+                                <a href="{{ path('gs_registration_edit', {'id': registration.id}) }}" class="btn btn-default btn-xs"
+                                   data-toggle="tooltip" data-placement="top" title="Modifier">
+                                    <i class="glyphicon glyphicon-edit"></i>
+                                </a>
+                                <a href="{{ path('gs_registration_delete', {'id': registration.id}) }}" class="btn btn-danger btn-xs"
+                                   data-toggle="tooltip" data-placement="top" title="Suprimmer">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                            </td>
+                        {% else %}
+                            <td>
+                            </td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+    <hr>
+
+    <p>
+        <a href="{{ path('gs_festival_view', {'id': level.festival.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour au festival
+        </a>
+        <a href="{{ path('gs_level_edit', {'id': level.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-edit"></i>
+            Modifier le niveau
+        </a>
+        <a href="{{ path('gs_level_delete', {'id': level.id}) }}" class="btn btn-danger">
+            <i class="glyphicon glyphicon-trash"></i>
+            Supprimer le niveau
+        </a>
+    </p>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    </script>
+{% endblock %}

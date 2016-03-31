@@ -1,0 +1,13 @@
+{% extends "GSPersonBundle::layout.html.twig" %}
+
+{% block title %}
+  Ajout d'une personne - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Ajouter une personne</h2>
+
+    {{ include("GSPersonBundle:Person:form.html.twig") }}
+
+{% endblock %}

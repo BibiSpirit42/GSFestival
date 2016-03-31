@@ -1,0 +1,24 @@
+## YAML Template.
+---
+registration:
+    title: Registration form
+    email: Email address
+    person: Personnal information
+    role:
+        label: Role
+        leader: Leader
+        follower: Follower
+    level: Level
+    offerHousing: I am offering housing
+    doubleBeds: Number of double beds
+    singleBeds: Number of single beds
+    requestHousing: I would like to be hosted if possible
+    shareBed: I want share my bed with
+    roommates: If possible I would like to be hosted with or closed to
+    comments: Comments
+    submit: Submit
+    partner:
+        firstName: First name of my partner
+        lastName: Last name of my partner
+        email: Email address of my partner
+        partner: Partner

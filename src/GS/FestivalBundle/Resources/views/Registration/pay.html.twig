@@ -1,0 +1,22 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Paiement d'une inscription - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Paiement d'une inscription</h2>
+
+    <div class="well">
+        {{ form(form) }}
+    </div>
+
+    <hr>
+    
+    <a href="{{ path('gs_level_view', {'id': registration.level.id}) }}" class="btn btn-default">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Retour au niveau
+    </a>
+
+{% endblock %}

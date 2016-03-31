@@ -1,0 +1,26 @@
+{% extends "GSPersonBundle::layout.html.twig" %}
+
+{% block title %}
+    Supprimer une personne - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Supprimer une personne</h2>
+
+    <p>
+        Etes-vous certain de vouloir supprimer la personne "{{ person.firstName }} {{ person.lastName }}" ?
+    </p>
+
+    <form action="{{ path('gs_person_delete', {'id': person.id}) }}" method="post">
+        <a href="{{ path('gs_person_view', {'id': person.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour a la personne
+        </a>
+        {# Ici j'ai écrit le bouton de soumission à la main #}
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+        {# Ceci va générer le champ CSRF #}
+        {{ form_rest(form) }}
+    </form>
+
+{% endblock %}

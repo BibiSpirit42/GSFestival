@@ -13,14 +13,6 @@
     </head>
 
     <body>
-        {% block javascripts %}
-            {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
-            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-            crossorigin="anonymous"></script>
-        {% endblock %}
-
         <div class="container">
             <div id="header" class="jumbotron">
                 <h1>Gestion des festivals</h1>
@@ -32,11 +24,6 @@
             <div class="row">
                 <div id="menu" class="col-md-3">
                     {% block menu %}
-                        <h3>Menu</h3>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="{{ path('gs_festival_homepage') }}">Accueil</a></li>
-                            <li><a href="{{ path('gs_festival_add') }}">Ajouter un festival</a></li>
-                        </ul>
                     {% endblock %}
                 </div>
                 <div id="content" class="col-md-9">
@@ -48,9 +35,17 @@
             <hr>
 
             <footer>
-                <p>Grenoble Swing</p>
+                <p>Copyright &copy; {{ "now"|date("Y") }} Grenoble Swing</p>
             </footer>
         </div>
+
+        {% block javascripts %}
+            {# Ajoutez ces lignes JavaScript si vous comptez vous servir des fonctionnalités du bootstrap Twitter #}
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        {% endblock %}
 
     </body>
 </html>

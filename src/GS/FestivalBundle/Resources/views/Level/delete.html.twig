@@ -1,0 +1,26 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Supprimer un niveau - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Supprimer un niveau</h2>
+
+    <p>
+        Etes-vous certain de vouloir supprimer le niveau "{{ level.name }}" ?
+    </p>
+
+    <form action="{{ path('gs_level_delete', {'id': level.id}) }}" method="post">
+        <a href="{{ path('gs_festival_view', {'id': festival.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour au festival
+        </a>
+        {# Ici j'ai écrit le bouton de soumission à la main #}
+        <input type="submit" value="Supprimer" class="btn btn-danger" />
+        {# Ceci va générer le champ CSRF #}
+        {{ form_rest(form) }}
+    </form>
+
+{% endblock %}

@@ -7,7 +7,7 @@ gs_festival_homepage:
         page: \d*
 
 gs_festival_view:
-    path:     /festival/{id}
+    path:     /view/{id}
     defaults:  { _controller: GSFestivalBundle:Festival:view }
     requirements:
         id: \d+
@@ -27,3 +27,94 @@ gs_festival_delete:
     defaults:  { _controller: GSFestivalBundle:Festival:delete }
     requirements:
         id: \d+
+
+
+gs_level_add:
+    path:     /level/add/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:add }
+    requirements:
+        id: \d+
+
+gs_level_edit:
+    path:     /level/edit/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:edit }
+    requirements:
+        id: \d+
+
+gs_level_view:
+    path:     /level/view/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:view }
+    requirements:
+        id: \d+
+
+gs_level_delete:
+    path:     /level/delete/{id}
+    defaults:  { _controller: GSFestivalBundle:Level:delete }
+    requirements:
+        id: \d+
+
+
+gs_registration_index:
+    path:     /registration
+    defaults:
+        _controller: GSFestivalBundle:Registration:index
+
+gs_registration_add:
+    path:     /{_locale}/registration/add/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:add }
+    requirements:
+        id: \d+
+        _locale: '%app.locales%'
+
+gs_registration_add2:
+    path:     /{_locale}/registration/add2/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:add2 }
+    requirements:
+        id: \d+
+        _locale: '%app.locales%'
+
+gs_registration_view:
+    path:     /registration/view/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:view }
+    requirements:
+        id: \d+
+    options:
+        expose: true
+        
+gs_registration_edit:
+    path:     /registration/edit/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:edit }
+    requirements:
+        id: \d+
+
+gs_registration_delete:
+    path:     /registration/delete/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:delete }
+    requirements:
+        id: \d+
+
+gs_registration_validate:
+    path:     /registration/change/{id}/assign
+    defaults:  { _controller: GSFestivalBundle:Registration:assign }
+    requirements:
+        id: \d+
+
+gs_registration_waiting:
+    path:     /registration/change/{id}/waiting
+    defaults:  { _controller: GSFestivalBundle:Registration:waiting }
+    requirements:
+        id: \d+
+
+gs_registration_email:
+    path:     /registration/email/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:email }
+    requirements:
+        id: \d+
+
+
+gs_payment_add:
+    path:     /payment/add/{id}
+    defaults:  { _controller: GSFestivalBundle:Payment:add }
+    requirements:
+        id: \d+
+

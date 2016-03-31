@@ -1,0 +1,26 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Mise en liste d'attente d'une inscription - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Mise en liste d'attente d'une inscription</h2>
+
+    <p>
+        Etes-vous certain de vouloir mettre en liste d'attente l'inscription ?
+    </p>
+
+    <form action="{{ path('gs_registration_waiting', {'id': registration.id}) }}" method="post">
+        <a href="{{ path('gs_level_view', {'id': registration.level.id}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour au niveau
+        </a>
+        {# Ici j'ai écrit le bouton de soumission à la main #}
+        <input type="submit" value="Oui" class="btn btn-warning" />
+        {# Ceci va générer le champ CSRF #}
+        {{ form_rest(form) }}
+    </form>
+
+{% endblock %}

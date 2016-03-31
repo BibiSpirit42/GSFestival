@@ -1,7 +1,21 @@
 {% extends "::base.html.twig" %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/festival.css') }}" />
+{% endblock %}
+
 {% block title %}
   Festivals - {{ parent() }}
+{% endblock %}
+
+{% block menu %}
+    <h3>Menu</h3>
+    <ul class="nav nav-pills nav-stacked">
+        <li><a href="{{ path('gs_festival_homepage') }}">Accueil</a></li>
+        <li><a href="{{ path('gs_festival_add') }}">Ajouter un festival</a></li>
+        <li><a href="{{ path('gs_registration_index') }}">Liste des inscriptions</a></li>
+    </ul>
 {% endblock %}
 
 {% block body %}
@@ -10,6 +24,14 @@
   <h1>Festivals</h1>
 
   <hr>
+
+  {% for type in ['info', 'success', 'danger', 'warning'] %}
+      {% for message in app.session.flashbag.get(type) %}
+          <div class="alert alert-{{ type }}">
+              {{ message }}
+          </div>
+      {% endfor %}
+  {% endfor %}
 
   {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
   {% block gsfestival_body %}

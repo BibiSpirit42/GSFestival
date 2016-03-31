@@ -1,0 +1,11 @@
+{% extends "GSFestivalBundle:Registration:base.html.twig" %}
+
+{% block title %}
+    Inscription {{ festival.name }} - {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    {{ include("GSFestivalBundle:Registration:form.html.twig") }}
+
+{% endblock %}

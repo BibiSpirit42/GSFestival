@@ -1,0 +1,21 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Ajout d'un paiement - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    <h2>Ajouter un paiement</h2>
+
+    {{ include("GSFestivalBundle:Payment:form.html.twig") }}
+
+    <hr>
+
+    <p>
+        <a href="{{ path('gs_level_view', {'id': levelId}) }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour
+        </a>
+    </p>
+{% endblock %}

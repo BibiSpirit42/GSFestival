@@ -1,0 +1,20 @@
+{% extends "GSFestivalBundle::layout.html.twig" %}
+
+{% block title %}
+    Inscription {{ festival.name }} - {{ parent() }}
+{% endblock %}
+
+{% block gsfestival_body %}
+
+    {{ include("GSFestivalBundle:Registration:form.html.twig") }}
+
+    <hr>
+
+    <p>
+        <a href="{{ previousUrl }}" class="btn btn-default">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Retour
+        </a>
+    </p>
+
+{% endblock %}
