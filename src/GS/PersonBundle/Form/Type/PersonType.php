@@ -1,6 +1,6 @@
 <?php
 
-namespace GS\PersonBundle\Form;
+namespace GS\PersonBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Misd\PhoneNumberBundle\Form\Type\PhoneNumberType;
 use libphonenumber\PhoneNumberFormat;
 
-use GS\PersonBundle\Form\AddressType;
+use GS\PersonBundle\Form\Type\AddressType;
 
 class PersonType extends AbstractType
 {

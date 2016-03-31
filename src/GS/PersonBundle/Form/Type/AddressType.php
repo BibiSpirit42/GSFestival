@@ -1,6 +1,6 @@
 <?php
 
-namespace GS\PersonBundle\Form;
+namespace GS\PersonBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

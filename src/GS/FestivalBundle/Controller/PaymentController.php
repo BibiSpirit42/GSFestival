@@ -3,10 +3,9 @@
 namespace GS\FestivalBundle\Controller;
 
 use GS\FestivalBundle\Entity\Payment;
-use GS\FestivalBundle\Form\PaymentType;
+use GS\FestivalBundle\Form\Type\PaymentType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends Controller
 {

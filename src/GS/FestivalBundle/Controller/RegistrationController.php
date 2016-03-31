@@ -4,14 +4,12 @@ namespace GS\FestivalBundle\Controller;
 
 use GS\FestivalBundle\Entity\Registration;
 use GS\PersonBundle\Entity\Person;
-use GS\FestivalBundle\Form\RegistrationType;
-use GS\FestivalBundle\Form\RegistrationEditType;
+use GS\FestivalBundle\Form\Type\RegistrationType;
+use GS\FestivalBundle\Form\Type\RegistrationEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use JMS\Serializer\SerializerBuilder;
 
 class RegistrationController extends Controller
 {
@@ -250,7 +248,7 @@ class RegistrationController extends Controller
         $registration = $em->getRepository('GSFestivalBundle:Registration')->find($id);
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
-        if ($registration == null) {
+        if ($registration === null) {
             throw $this->createNotFoundException("Le niveau d'id " . $id . " n'existe pas.");
         }
 
@@ -283,7 +281,7 @@ class RegistrationController extends Controller
         $registration = $em->getRepository('GSFestivalBundle:Registration')->find($id);
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
-        if ($registration == null) {
+        if ($registration === null) {
             throw $this->createNotFoundException("Le niveau d'id " . $id . " n'existe pas.");
         }
 

@@ -2,6 +2,7 @@
     "name": "jbilloud/symfony",
     "license": "proprietary",
     "type": "project",
+    "description": "Management of Grenoble Swing festivals registrations",
     "autoload": {
         "psr-4": {
             "": "src/"

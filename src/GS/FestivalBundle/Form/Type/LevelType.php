@@ -1,17 +1,18 @@
 <?php
 
-namespace GS\FestivalBundle\Form;
+namespace GS\FestivalBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class FestivalType extends AbstractType
+class LevelType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -22,9 +23,10 @@ class FestivalType extends AbstractType
         $builder
                 ->add('name', TextType::class)
                 ->add('description', TextareaType::class)
-                ->add('date', DateType::class)
-                ->add('location', TextType::class)
-                ->add('published', CheckboxType::class, array('required' => false))
+                ->add('solo', CheckboxType::class, array('required' => false))
+                ->add('capacity', IntegerType::class)
+                ->add('extraPerson', IntegerType::class)
+                ->add('price', NumberType::class, array('scale' => 2))
                 ->add('save', SubmitType::class)
         ;
     }
@@ -35,7 +37,8 @@ class FestivalType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'GS\FestivalBundle\Entity\Festival'
+            'data_class' => 'GS\FestivalBundle\Entity\Level',
+            'btn_summit' => false,
         ));
     }
 }

@@ -3,10 +3,9 @@
 namespace GS\FestivalBundle\Controller;
 
 use GS\FestivalBundle\Entity\Level;
-use GS\FestivalBundle\Form\LevelType;
+use GS\FestivalBundle\Form\Type\LevelType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LevelController extends Controller
 {
@@ -106,7 +105,7 @@ class LevelController extends Controller
         $festival = $level->getFestival();
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
-        if ($level == null) {
+        if ($level === null) {
             throw $this->createNotFoundException("Le niveau d'id " . $id . " n'existe pas.");
         }
 

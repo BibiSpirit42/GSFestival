@@ -3,7 +3,7 @@
 namespace GS\PersonBundle\Controller;
 
 use GS\PersonBundle\Entity\Person;
-use GS\PersonBundle\Form\PersonType;
+use GS\PersonBundle\Form\Type\PersonType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -120,7 +120,7 @@ class PersonController extends Controller
         $person = $em->getRepository('GSPersonBundle:Person')->find($id);
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
-        if ($person == null) {
+        if ($person === null) {
             throw $this->createNotFoundException("La personne d'id " . $id . " n'existe pas.");
         }
 

@@ -2,8 +2,6 @@
 
 namespace GS\FestivalBundle\Repository;
 
-use Doctrine\ORM\Tools\Pagination\Paginator;
-
 use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Entity\Registration;
 use GS\FestivalBundle\Entity\Festival;
@@ -40,7 +38,7 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
 
         $result = array();
         while ($current = $this->getNextRegistration($leaders, $followers)) {
-            if ($current->getRole() == true) {
+            if ($current->getRole() === true) {
                 $result[] = array($current, $this->getAssociatedPartner($current, $followers));
             } else {
                 $result[] = array($this->getAssociatedPartner($current, $leaders), $current);

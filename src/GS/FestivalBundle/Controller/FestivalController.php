@@ -3,7 +3,7 @@
 namespace GS\FestivalBundle\Controller;
 
 use GS\FestivalBundle\Entity\Festival;
-use GS\FestivalBundle\Form\FestivalType;
+use GS\FestivalBundle\Form\Type\FestivalType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -117,7 +117,7 @@ class FestivalController extends Controller
         $festival = $em->getRepository('GSFestivalBundle:Festival')->find($id);
 
         // Si l'annonce n'existe pas, on affiche une erreur 404
-        if ($festival == null) {
+        if ($festival === null) {
             throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
         }
 

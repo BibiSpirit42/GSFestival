@@ -1,11 +1,10 @@
 <?php
 
-namespace GS\FestivalBundle\Form;
+namespace GS\FestivalBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\EntityRepository;
 
 class RegistrationEditType extends RegistrationType
 {
