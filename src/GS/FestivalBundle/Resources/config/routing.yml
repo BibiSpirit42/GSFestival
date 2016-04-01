@@ -5,28 +5,33 @@ gs_festival_homepage:
         page: 1
     requirements:
         page: \d*
+    methods: [GET]
 
 gs_festival_view:
     path:     /view/{id}
     defaults:  { _controller: GSFestivalBundle:Festival:view }
     requirements:
         id: \d+
+    methods: [GET]
 
 gs_festival_add:
     path:     /add
     defaults:  { _controller: GSFestivalBundle:Festival:add }
+    methods: [GET, POST]
 
 gs_festival_edit:
     path:     /edit/{id}
     defaults:  { _controller: GSFestivalBundle:Festival:edit }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 gs_festival_delete:
     path:     /delete/{id}
     defaults:  { _controller: GSFestivalBundle:Festival:delete }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 
 gs_level_add:
@@ -34,30 +39,35 @@ gs_level_add:
     defaults:  { _controller: GSFestivalBundle:Level:add }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 gs_level_edit:
     path:     /level/edit/{id}
     defaults:  { _controller: GSFestivalBundle:Level:edit }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 gs_level_view:
     path:     /level/view/{id}
     defaults:  { _controller: GSFestivalBundle:Level:view }
     requirements:
         id: \d+
+    methods: [GET]
 
 gs_level_delete:
     path:     /level/delete/{id}
     defaults:  { _controller: GSFestivalBundle:Level:delete }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 
 gs_registration_index:
     path:     /registration
     defaults:
         _controller: GSFestivalBundle:Registration:index
+    methods: [GET]
 
 gs_registration_add:
     path:     /{_locale}/registration/add/{id}
@@ -65,6 +75,7 @@ gs_registration_add:
     requirements:
         id: \d+
         _locale: '%app.locales%'
+    methods: [GET, POST]
 
 gs_registration_add2:
     path:     /{_locale}/registration/add2/{id}
@@ -72,6 +83,7 @@ gs_registration_add2:
     requirements:
         id: \d+
         _locale: '%app.locales%'
+    methods: [GET, POST]
 
 gs_registration_view:
     path:     /registration/view/{id}
@@ -80,36 +92,42 @@ gs_registration_view:
         id: \d+
     options:
         expose: true
-        
+    methods: [GET]
+
 gs_registration_edit:
     path:     /registration/edit/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:edit }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 gs_registration_delete:
     path:     /registration/delete/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:delete }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 gs_registration_validate:
     path:     /registration/change/{id}/assign
     defaults:  { _controller: GSFestivalBundle:Registration:assign }
     requirements:
         id: \d+
+    methods: [GET]
 
 gs_registration_waiting:
     path:     /registration/change/{id}/waiting
     defaults:  { _controller: GSFestivalBundle:Registration:waiting }
     requirements:
         id: \d+
+    methods: [GET]
 
 gs_registration_email:
     path:     /registration/email/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:email }
     requirements:
         id: \d+
+    methods: [GET]
 
 
 gs_payment_add:
@@ -117,4 +135,4 @@ gs_payment_add:
     defaults:  { _controller: GSFestivalBundle:Payment:add }
     requirements:
         id: \d+
-
+    methods: [GET, POST]

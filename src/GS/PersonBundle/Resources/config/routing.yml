@@ -6,27 +6,32 @@ gs_person_homepage:
         page: 1
     requirements:
         page: \d*
+    methods: [GET]
 
 gs_person_add:
     path:     /{_locale}/add
     defaults:  { _controller: GSPersonBundle:Person:add }
     requirements:
         _locale: '%app.locales%'
+    methods: [GET, POST]
 
 gs_person_view:
     path:     /view/{id}
     defaults:  { _controller: GSPersonBundle:Person:view }
     requirements:
         id: \d+
+    methods: [GET]
 
 gs_person_edit:
     path:     /edit/{id}
     defaults:  { _controller: GSPersonBundle:Person:edit }
     requirements:
         id: \d+
+    methods: [GET, POST]
 
 gs_person_delete:
     path:     /delete/{id}
     defaults:  { _controller: GSPersonBundle:Person:delete }
     requirements:
         id: \d+
+    methods: [GET, POST]

@@ -10,6 +10,7 @@ address:
     street: Rue
     street2: Rue (suite)
     zipCode: Code postal
+    city: Ville
     county: Département
     state: Région
     country: Pays

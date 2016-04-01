@@ -28,6 +28,9 @@ class AddressType extends AbstractType
                 ->add('zipCode', TextType::class, array(
                     'label' => 'address.zipCode',
                 ))
+                ->add('city', TextType::class, array(
+                    'label' => 'address.city',
+                ))
                 ->add('county', TextType::class, array(
                     'label' => 'address.county',
                     'required' => false

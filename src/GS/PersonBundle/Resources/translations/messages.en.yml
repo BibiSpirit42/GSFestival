@@ -10,6 +10,7 @@ address:
     street: Street
     street2: Street (continuation)
     zipCode: Zip code
+    city: City
     county: County
     state: State
     country: Country
