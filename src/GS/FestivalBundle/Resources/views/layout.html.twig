@@ -10,13 +10,8 @@
 {% endblock %}
 
 {% block menu %}
-    <h3>Menu</h3>
-    <ul class="nav nav-pills nav-stacked">
-        <li><a href="{{ path('gs_festival_homepage') }}">Accueil</a></li>
-        <li><a href="{{ path('gs_festival_add') }}">Ajouter un festival</a></li>
-        <li><a href="{{ path('gs_registration_index') }}">Liste des inscriptions</a></li>
-        <li><a href="{{ path('gs_person_homepage') }}">Liste des personnes</a></li>
-    </ul>
+    {{ parent() }}
+    {{ knp_menu_render('GSFestivalBundle:Builder:mainMenu', {'currentClass': 'active', 'template': 'AppBundle:Menu:knp_menu.html.twig'}) }}
 {% endblock %}
 
 {% block body %}

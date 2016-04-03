@@ -1,0 +1,6 @@
+
+homepage:
+    path:     /
+    defaults:
+        _controller: AppBundle:Default:index
+    methods: [GET]

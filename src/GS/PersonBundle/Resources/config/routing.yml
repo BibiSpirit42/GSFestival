@@ -27,11 +27,11 @@ gs_person_edit:
     defaults:  { _controller: GSPersonBundle:Person:edit }
     requirements:
         id: \d+
-    methods: [GET, POST]
+    methods: [PUT]
 
 gs_person_delete:
     path:     /delete/{id}
     defaults:  { _controller: GSPersonBundle:Person:delete }
     requirements:
         id: \d+
-    methods: [GET, POST]
+    methods: [DELETE]

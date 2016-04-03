@@ -8,10 +8,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class PersonController extends Controller
 {
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function indexAction($page)
     {
         if ($page < 1) {
@@ -95,7 +99,7 @@ class PersonController extends Controller
             throw $this->createNotFoundException("La personne d'id " . $id . " n'existe pas.");
         }
         
-        $form = $this->createForm(PersonType::class, $person);
+        $form = $this->createForm(PersonType::class, $person, array('method' => 'PUT'));
         $form->add('submit', SubmitType::class);
 
         if ($form->handleRequest($request)->isValid()) {
@@ -111,6 +115,9 @@ class PersonController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deleteAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -124,7 +131,10 @@ class PersonController extends Controller
             throw $this->createNotFoundException("La personne d'id " . $id . " n'existe pas.");
         }
 
-        $form = $this->createFormBuilder()->getForm();
+        $form = $this->createFormBuilder()
+                ->setMethod('DELETE')
+                ->add('delete', SubmitType::class, array('label' => 'Supprimer'))
+                ->getForm();
         
         if ($form->handleRequest($request)->isValid()) {
             $em->remove($person);

@@ -85,6 +85,13 @@ gs_registration_add2:
         _locale: '%app.locales%'
     methods: [GET, POST]
 
+gs_registration_preview:
+    path:     /registration/preview/{id}
+    defaults:  { _controller: GSFestivalBundle:Registration:preview }
+    requirements:
+        id: \d+
+    methods: [GET]
+
 gs_registration_view:
     path:     /registration/view/{id}
     defaults:  { _controller: GSFestivalBundle:Registration:view }

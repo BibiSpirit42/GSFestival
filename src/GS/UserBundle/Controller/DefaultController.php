@@ -1,6 +1,6 @@
 <?php
 
-namespace GS\FestivalBundle\Controller;
+namespace GS\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -8,6 +8,6 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('GSFestivalBundle:Default:index.html.twig');
+        return $this->render('GSUserBundle:Default:index.html.twig');
     }
 }

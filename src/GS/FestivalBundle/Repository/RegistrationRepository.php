@@ -37,43 +37,71 @@ class RegistrationRepository extends \Doctrine\ORM\EntityRepository
         $followers = $this->getFollowersForLevel($level);
 
         $result = array();
-        while ($current = $this->getNextRegistration($leaders, $followers)) {
-            if ($current->getRole() === true) {
-                $result[] = array($current, $this->getAssociatedPartner($current, $followers));
-            } else {
-                $result[] = array($this->getAssociatedPartner($current, $leaders), $current);
-            }
+        while ($current = $this->getNextCouple($leaders, $followers)) {
+            $result[] = $current;
         }
 
         return $result;
     }
 
-    private function getNextRegistration(array &$leaders, array &$followers)
+    private function getNextCouple(array &$leaders, array &$followers)
     {
-        $result = null;
-        if (count($leaders) == 0) {
-            $result = array_shift($followers);
+        if (count($leaders) == 0 && count($followers) == 0) {
+            return null;
+        } else if (count($leaders) == 0) {
+            return [null, array_shift($followers)];
         } else if (count($followers) == 0) {
-            $result = array_shift($leaders);
+            return [array_shift($leaders), null];
         } else if ($leaders[0]->getId() < $followers[0]->getId()) {
-            $result = array_shift($leaders);
+            return $this->getNextFullCouple($leaders, $followers);
         } else if ($leaders[0]->getId() > $followers[0]->getId()) {
-            $result = array_shift($followers);
+            return array_reverse($this->getNextFullCouple($followers, $leaders));
         }
-        return $result;
+        
+        throw new \LogicException('This code should not be reached!');
+    }
+
+    private function getNextFullCouple(array &$p1s, array &$p2s)
+    {
+        $p1 = array_shift($p1s);
+        $p2 = $this->getAssociatedPartner($p1, $p2s);
+        if ($p2 === null) {
+            // If we cannot find a partner to p1 it means p1 does not have
+            // a partner defined and all p2s have a partner defined.
+            // Thus the next couple will be the first p2 with its partner.
+            array_unshift($p1s, $p1);
+            $p2 = array_shift($p2s);
+            $p1 = $this->getAssociatedPartner($p2, $p1s);
+        }
+        return [$p1, $p2];
     }
 
     private function getAssociatedPartner(Registration $current, array &$registrations)
     {
         $result = null;
         if (null !== $current->getPartner()) {
+            // If the registration has a partner: done!
             if (($key = array_search($current->getPartner(), $registrations)) !== false) {
                 $result = $current->getPartner();
+                // We withdraw the partner from the list of remaining registrations
                 unset($registrations[$key]);
+                // Force reassignment of the key from 0 to end of array
                 $registrations = array_values($registrations);
             }
         } elseif ($registrations) {
-            $result = array_shift($registrations);
+            // Else if there are still some remaining registrations,
+            // We try to find a partner to our current registration.
+            // We pick the first one available.
+            $temp = array_shift($registrations);
+            if (null !== $temp->getPartner()) {
+                // If this one has a partner, it cannot be the partner of our lonely registration.
+                // So we try to find a partner among the remaining registrations.
+                $result = $this->getAssociatedPartner($current, $registrations);
+                array_unshift($registrations, $temp);
+            } else {
+                // If this registration has no partner, we match it with the current registration.
+                $result = $temp;
+            }
         }
         return $result;
     }

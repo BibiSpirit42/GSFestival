@@ -32,11 +32,11 @@
             <i class="glyphicon glyphicon-chevron-left"></i>
             Retour à la liste
         </a>
-        <a href="{{ path('gs_person_edit', {'id': person.id}) }}" class="btn btn-default">
+        <a href="{{ path('gs_person_edit', {'id': person.id, '_method': 'PUT'}) }}" class="btn btn-default">
             <i class="glyphicon glyphicon-edit"></i>
             Modifier la personne
         </a>
-        <a href="{{ path('gs_person_delete', {'id': person.id}) }}" class="btn btn-danger">
+        <a href="{{ path('gs_person_delete', {'id': person.id, '_method': 'DELETE'}) }}" class="btn btn-danger">
             <i class="glyphicon glyphicon-trash"></i>
             Supprimer la personne
         </a>

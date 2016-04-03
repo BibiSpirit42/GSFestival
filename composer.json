@@ -33,7 +33,9 @@
         "stof/doctrine-extensions-bundle": "~1.2",
         "twig/extensions": "~1.0",
         "friendsofsymfony/jsrouting-bundle": "^1.6",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
         "egeloen/ordered-form-bundle": "~2.0",
+        "knplabs/knp-menu-bundle": "^2.0",
         "misd/phone-number-bundle": "~1.0"
     },
     "require-dev": {

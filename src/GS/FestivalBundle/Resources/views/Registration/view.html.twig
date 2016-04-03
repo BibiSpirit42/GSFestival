@@ -1,11 +1,11 @@
-{% extends "GSFestivalBundle:Registration:base.html.twig" %}
+{% extends "GSFestivalBundle::layout.html.twig" %}
 
 {% block title %}
     Inscription {{ registration.level.festival.name }} - {{ parent() }}
 {% endblock %}
 
-{% block body %}
-    <h3>Formulaire d'inscription envoye</h3>
+{% block gsfestival_body %}
+    <h3>Inscription</h3>
 
     <address>
         <strong>{{ registration.person.firstName }} {{ registration.person.lastName }}</strong><br>

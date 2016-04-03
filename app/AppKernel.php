@@ -22,6 +22,9 @@ class AppKernel extends Kernel
             new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
             new GS\PersonBundle\GSPersonBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new GS\UserBundle\GSUserBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -6,10 +6,14 @@ use GS\FestivalBundle\Entity\Level;
 use GS\FestivalBundle\Form\Type\LevelType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class LevelController extends Controller
 {
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function addAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -37,6 +41,9 @@ class LevelController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function editAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -63,6 +70,9 @@ class LevelController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
     public function overviewAction($id)
     {
         // On récupère l'EntityManager
@@ -78,6 +88,9 @@ class LevelController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
     public function viewAction($id)
     {
         // On récupère l'EntityManager
@@ -95,6 +108,9 @@ class LevelController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deleteAction($id, Request $request)
     {
         // On récupère l'EntityManager

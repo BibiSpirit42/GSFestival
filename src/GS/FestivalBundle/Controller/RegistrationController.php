@@ -10,10 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class RegistrationController extends Controller
 {
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function indexAction(Request $request)
     {
         $festival = null;
@@ -62,7 +66,7 @@ class RegistrationController extends Controller
             $person = $em->getRepository('GSPersonBundle:Person')->findOneByEmail($form->get('email')->getData());
             if ($person !== null) {
                 $registrations = $em->getRepository('GSFestivalBundle:Registration')->getForPersonAndFestival($festival, $person);
-                if ($registrations !== null) {
+                if ($registrations !== null && count($registrations)) {
                     $request->getSession()->getFlashBag()->add('danger', 'Il y a déja une inscription avec cet email.');
                     return $this->redirectToRoute('gs_registration_add', array('id' => $id));
                 }
@@ -110,7 +114,7 @@ class RegistrationController extends Controller
             $request->getSession()->getFlashBag()->add('success', 'Inscription bien enregistrée.');
             $request->getSession()->remove('email');
 
-            return $this->redirectToRoute('gs_registration_view', array('id' => $registration->getId()));
+            return $this->redirectToRoute('gs_registration_preview', array('id' => $registration->getId()));
         }
 
         return $this->render('GSFestivalBundle:Registration:add.html.twig', array(
@@ -119,6 +123,24 @@ class RegistrationController extends Controller
         ));
     }
 
+    public function previewAction($id)
+    {
+        // On récupère l'EntityManager
+        $em = $this->getDoctrine()->getManager();
+
+        $registration = $em->getRepository('GSFestivalBundle:Registration')->find($id);
+        if ($registration === null) {
+            throw $this->createNotFoundException("L'inscription d'id " . $id . " n'existe pas.");
+        }
+
+        return $this->render('GSFestivalBundle:Registration:preview.html.twig', array(
+                    'registration' => $registration,
+        ));
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function viewAction($id)
     {
         // On récupère l'EntityManager
@@ -134,6 +156,9 @@ class RegistrationController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function editAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -170,6 +195,9 @@ class RegistrationController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function assignAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -193,6 +221,9 @@ class RegistrationController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function waitingAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -239,6 +270,9 @@ class RegistrationController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function deleteAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -272,6 +306,9 @@ class RegistrationController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function emailAction($id, Request $request)
     {
         // On récupère l'EntityManager

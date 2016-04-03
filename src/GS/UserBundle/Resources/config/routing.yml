@@ -1,0 +1,6 @@
+#gs_user_homepage:
+#    path:     /
+#    defaults:
+#        _controller: GSPersonBundle:User:index
+#    methods: [GET]
+

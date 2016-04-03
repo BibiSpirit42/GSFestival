@@ -10,12 +10,8 @@
 {% endblock %}
 
 {% block menu %}
-    <h3>Menu</h3>
-    <ul class="nav nav-pills nav-stacked">
-        <li><a href="{{ path('gs_festival_homepage') }}">Accueil</a></li>
-        <li><a href="{{ path('gs_person_homepage') }}">Liste des personnes</a></li>
-        <li><a href="{{ path('gs_person_add') }}">Ajouter une personne</a></li>
-    </ul>
+    {{ parent() }}
+    {{ knp_menu_render('GSPersonBundle:Builder:mainMenu', {'currentClass': 'active', 'template': 'AppBundle:Menu:knp_menu.html.twig'}) }}
 {% endblock %}
 
 {% block body %}

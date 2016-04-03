@@ -7,10 +7,14 @@ use GS\FestivalBundle\Form\Type\FestivalType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class FestivalController extends Controller
 {
 
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
     public function indexAction($page)
     {
         if ($page < 1) {
@@ -43,6 +47,9 @@ class FestivalController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_USER')")
+     */
     public function viewAction($id)
     {
         // On récupère l'EntityManager
@@ -60,11 +67,14 @@ class FestivalController extends Controller
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function addAction(Request $request)
     {
         $festival = new Festival();
         $form = $this->createForm(FestivalType::class, $festival);
-        
+
         if ($form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($festival);
@@ -76,10 +86,13 @@ class FestivalController extends Controller
         }
 
         return $this->render('GSFestivalBundle:Festival:add.html.twig', array(
-            'form' => $form->createView(),
+                    'form' => $form->createView(),
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
     public function editAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -92,9 +105,9 @@ class FestivalController extends Controller
         if ($festival === null) {
             throw $this->createNotFoundException("Le festival d'id " . $id . " n'existe pas.");
         }
-        
+
         $form = $this->createForm(FestivalType::class, $festival);
-        
+
         if ($form->handleRequest($request)->isValid()) {
             $em->flush();
 
@@ -102,12 +115,15 @@ class FestivalController extends Controller
 
             return $this->redirectToRoute('gs_festival_view', array('id' => $festival->getId()));
         }
-        
+
         return $this->render('GSFestivalBundle:Festival:edit.html.twig', array(
                     'form' => $form->createView(),
         ));
     }
 
+    /**
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     */
     public function deleteAction($id, Request $request)
     {
         // On récupère l'EntityManager
@@ -122,7 +138,7 @@ class FestivalController extends Controller
         }
 
         $form = $this->createFormBuilder()->getForm();
-        
+
         if ($form->handleRequest($request)->isValid()) {
             $em->remove($festival);
             $em->flush();
